@@ -22,13 +22,13 @@
         <label>Email</label>
         <div class="input-group">
           <input type="email" name="email" placeholder="Enter your Email" required>
-          <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-envelope"></i></span>
         </div>
 
         <label>Password</label>
         <div class="input-group">
           <input type="password" name="password" placeholder="Enter your Password" required>
-          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-lock"></i></span>
         </div>
 
         <div class="form-options">

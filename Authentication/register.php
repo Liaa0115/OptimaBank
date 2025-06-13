@@ -25,27 +25,27 @@
 
         <div class="input-group">
           <input type="text" name="username" placeholder="Enter username here" required />
-          <span class="icon"><i class="fa-solid fa-user"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-user"></i></span>
         </div>
 
         <div class="input-group">
           <input type="email" name="email" placeholder="Enter your Email" required />
-          <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-envelope"></i></span>
         </div>
 
         <div class="input-group">
           <input type="text" name="phone" placeholder="Enter phone number here" required />
-          <span class="icon"><i class="fa-solid fa-phone"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-phone"></i></span>
         </div>
 
         <div class="input-group">
           <input type="password" name="password" placeholder="Enter password here" required />
-          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-lock"></i></span>
         </div>
 
         <div class="input-group">
           <input type="password" name="confirm_password" placeholder="Re-enter your password here" required />
-          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-lock"></i></span>
         </div>
 
         <button type="submit" class="btn">Sign Up</button>
