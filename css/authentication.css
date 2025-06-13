@@ -1,0 +1,138 @@
+ * {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+    margin: 0;
+    background: url('../images/background.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    }
+
+    .container {
+    display: flex;
+    width: 1000px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .left {
+    flex: 1;
+    padding: 50px;
+    background: rgba(44, 164, 126, 0.6); 
+    color: white;
+    }
+
+    .left .logo {
+    height: 50px;
+    margin-bottom: 30px;
+    }
+
+    .left h1 {
+    font-size: 40px;
+    margin: 0 0 10px;
+    }
+
+    .left p {
+    font-size: 16px;
+    }
+
+    .right {
+    flex: 1;
+    padding: 50px;
+    background-color: white;
+    }
+
+    .login-form h2 {
+    color: #2ca47e;
+    margin-bottom: 30px;
+    }
+
+    .input-group {
+    position: relative;
+    margin-bottom: 20px;
+    }
+
+    .input-group input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    }
+
+    .input-group .icon {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    font-size: 18px;
+    }
+
+    .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    }
+
+    .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ca47e;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    }
+
+    .divider {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #aaa;
+    }
+
+    .google-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    gap: 10px;
+    cursor: pointer;
+    }
+
+    .google-btn img {
+    height: 20px;
+    }
+
+    .register {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    }
+
+    .register a {
+    color: #2ca47e;
+    text-decoration: none;
+    }
+
+      .fpassword a {
+    color: #2ca47e;
+    text-decoration: none;
+    }
+
+    .icon {
+    opacity: 0.6;
+    margin-top: -1%;
+    }
