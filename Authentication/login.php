@@ -5,6 +5,15 @@
   <title>OptimaBank Login</title>
   <link rel="stylesheet" href="../css/authentication.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
+  
+  
+  <style>
+      /* Modal Styles */
+      .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+      .modal-content { background-color: white; padding: 20px; border-radius: 8px; width: 300px; position: relative; }
+      .close { position: absolute; right: 10px; top: 5px; cursor: pointer; font-size: 18px; }
+  </style>
 
 </head>
 <body>
@@ -33,7 +42,7 @@
 
         <div class="form-options">
           <label><input type="checkbox" name="remember"> Remember Me</label>
-          <p class="fpassword" ><a href="#">Forgot Password?</a></p>
+          <p class="fpassword"><a href="#" onclick="openModal()">Forgot Password?</a></p>
         </div>
 
         <button type="submit" class="btn">Log In</button>
@@ -46,6 +55,28 @@
 
         <p class="register">Don’t Have an Account? <a href="register.php">Register</a></p>
       </form>
+
+      <!-- Forgot Password Modal -->
+      <div id="forgotModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h3>Forgot Password</h3>
+          <form action="../send_reset_email.php" method="POST">
+            <label for="reset_email">Enter your email:</label>
+            <input type="email" name="reset_email" required>
+            <button type="submit">Send Reset Link</button>
+          </form>
+        </div>
+      </div>
+
+      <script>
+      function openModal() {
+        document.getElementById('forgotModal').style.display = 'flex';
+      }
+      function closeModal() {
+        document.getElementById('forgotModal').style.display = 'none';
+      }
+      </script>
 
       <?php session_start(); ?>
         <?php if (isset($_SESSION['error'])): ?>
