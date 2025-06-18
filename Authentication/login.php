@@ -8,11 +8,84 @@
   
   
   <style>
-      /* Modal Styles */
-      .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-      .modal-content { background-color: white; padding: 20px; border-radius: 8px; width: 300px; position: relative; }
-      .close { position: absolute; right: 10px; top: 5px; cursor: pointer; font-size: 18px; }
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center; align-items: center;
+  }
+
+  .modal-content {
+    background-color: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    text-align: center;
+    border: 3px solid #189d82;
+  }
+
+  .modal-content h3 {
+    color: #189d82;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  .modal-content img {
+    width: 130px;
+    margin-bottom: 20px;
+  }
+
+  .modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .modal-content input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+
+  .modal-content button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #189d82;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .modal-content button:hover {
+    background-color: #147f6b;
+  }
+
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+  }
+
+  .close:hover {
+    color: #000;
+  }
   </style>
 
 </head>
@@ -60,10 +133,11 @@
       <div id="forgotModal" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal()">&times;</span>
-          <h3>Forgot Password</h3>
+          <h3>RESET YOUR PASSWORD</h3>
+          <img src="../images/logo.png" alt="OptimaBank Logo"> <!-- Replace with actual logo path -->
           <form action="../send_reset_email.php" method="POST">
-            <label for="reset_email">Enter your email:</label>
-            <input type="email" name="reset_email" required>
+            <label for="reset_email">Email</label>
+            <input type="email" name="reset_email" id="reset_email" placeholder="Enter your Email" required>
             <button type="submit">Send Reset Link</button>
           </form>
         </div>
@@ -78,7 +152,6 @@
       }
       </script>
 
-      <?php session_start(); ?>
         <?php if (isset($_SESSION['error'])): ?>
           <div class="error-message" style="color:red; text-align:center;">
             <?php
