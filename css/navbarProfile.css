@@ -1,0 +1,104 @@
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  z-index: 999;
+}
+
+.top-navbar .logo img {
+  height: 40px;
+  display: block;
+}
+
+.top-navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+   margin-right: 40px;
+  padding: 0;
+}
+
+.top-navbar ul li {
+  display: flex;
+  align-items: center;
+  height: 100%; /* match parent height */
+}
+
+.top-navbar ul li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  height: 100%;
+}
+
+.top-navbar ul li a:hover {
+  background-color: #f0f4ff;
+  color: #1a73e8;
+}
+
+/* Highlighted points badge */
+.top-navbar ul li.points-badge a {
+  background-color: #e8cfa2;
+  font-weight: 600;
+  color: #222;
+  border-radius: 20px;
+  padding: 8px 18px;
+}
+
+/* Shopping cart icon */
+.top-navbar ul li a i {
+  font-size: 18px;
+}
+
+/* Responsive fallback */
+@media (max-width: 992px) {
+  .top-navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    align-items: flex-start;
+  }
+
+  .top-navbar ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .top-navbar ul li a {
+    width: 100%;
+  }
+}
+
+.points-badge a {
+  background-color: #e8cfa2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #333;
+  display: inline-block;
+}
+
+/* Prevent content from hiding behind navbar */
+body {
+  padding-top: 75px;
+  margin: 0;
+}
