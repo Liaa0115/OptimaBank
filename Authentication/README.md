@@ -1,2 +1,0 @@
-# OptimaBank
-WebProject Description

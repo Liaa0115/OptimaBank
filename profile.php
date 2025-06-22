@@ -139,7 +139,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <form method="post" action="update_profile.php" enctype="multipart/form-data">
       <div>
         <label>Full Name</label>
-        <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname']) ?>">
+        <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname'] ?? '') ?>">
       </div>
       <div>
         <label>Username</label>
@@ -155,11 +155,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
       </div>
       <div>
         <label>Address</label>
-        <input type="text" name="address" value="<?= htmlspecialchars($user['address']) ?>">
+        <input type="text" name="address" value="<?= htmlspecialchars($user['address'] ?? '') ?>">
       </div>
       <div>
         <label>About Me</label>
-        <textarea name="about"><?= htmlspecialchars($user['about']) ?></textarea>
+        <textarea name="about"><?= htmlspecialchars($user['about'] ?? '') ?></textarea>
       </div>
       <div>
         <label>Profile Image</label>
