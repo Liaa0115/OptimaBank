@@ -94,7 +94,7 @@
     <div class="left">
       <img src="../images/logo.png" alt="OptimaBank Logo" class="logo" style="width: 70%; height:auto; margin-top:30%">
       <h1>Welcome Back!</h1>
-      <p>Secure. Smart. Seamless Banking.</p>
+      <p>Secure. Smart. Seamless Bankin.</p>
     </div>
 
     <div class="right">
