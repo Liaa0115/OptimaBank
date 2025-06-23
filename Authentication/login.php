@@ -86,6 +86,19 @@
   .close:hover {
     color: #000;
   }
+
+  .input-group {
+    position: relative;
+  }
+
+  .input-group .icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+  }
+
   </style>
 
 </head>
@@ -109,8 +122,10 @@
 
         <label>Password</label>
         <div class="input-group">
-          <input type="password" name="password" placeholder="Enter your Password" required>
-          <span class="icon" style="font-size: medium;"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" name="password" id="password" placeholder="Enter your Password" required>
+          <span class="icon" style="font-size: medium; cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #aaa;" onclick="togglePasswordVisibility()">
+            <i class="fa-solid fa-eye" id="togglePasswordIcon" style="padding-left: 8px; padding-right: 8px;"></i> <i class="fa-solid fa-lock"></i>
+          </span>
         </div>
 
         <div class="form-options">
@@ -149,6 +164,21 @@
       }
       function closeModal() {
         document.getElementById('forgotModal').style.display = 'none';
+      }
+
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('togglePasswordIcon');
+
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          toggleIcon.classList.remove('fa-eye');
+          toggleIcon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          toggleIcon.classList.remove('fa-eye-slash');
+          toggleIcon.classList.add('fa-eye');
+        }
       }
       </script>
 
