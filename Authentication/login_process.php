@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Login success
             $_SESSION['email'] = $user['email'];
             $_SESSION['username'] = $user['username'];
-            header("Location: ../homepage.php");
+            header("Location: ../profile.php");
             exit();
         } else {
             // Wrong password

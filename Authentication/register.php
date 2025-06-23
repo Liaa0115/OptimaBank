@@ -6,8 +6,23 @@
   <title>Register - OptimaBank</title>
   <link rel="stylesheet" href="../css/authentication.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body> 
+
+ <nav class="top-navbar">
+  <div class="logo">
+    <a href="index.html">
+      <img src="../images/logo.png" alt="OptimaBank Logo" style="height: 30px;">
+    </a>
+  </div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="voucher.html">Voucher</a></li>
+    <li><a href="login.php">Sign In</a></li>
+  </ul>
+</nav>
+
 
   <div class="container">
     <!-- Left Side (Image + Welcome Text) -->
