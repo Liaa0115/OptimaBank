@@ -2,7 +2,6 @@
 session_start();
 include 'conn.php';
 
-// Ensure user is logged in
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
@@ -10,13 +9,11 @@ if (!isset($_SESSION['email'])) {
 
 $email = $_SESSION['email'];
 
-// Get user info
-$stmt = $conn->prepare("SELECT username, fullname, phone, address, about, profile_image FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 
-// Get points
 $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
 $pointStmt->bind_param("s", $email);
 $pointStmt->execute();
@@ -27,148 +24,133 @@ $points = $pointResult ? $pointResult['points'] : 0;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Profile</title>
-  <link rel="stylesheet" href="css/navbarProfile.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f1fdfb;
-      margin: 0;
-      padding-top: 80px;
-    }
-    .profile-container {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 40px;
-      flex-wrap: wrap;
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .card.profile {
-      text-align: center;
-      width: 300px;
-    }
-    .card.profile img {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .card.profile h3 {
-      margin-top: 20px;
-      font-size: 20px;
-    }
-    .card.profile .balance-box {
-      background: #e6faf5;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 25px;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .card.details {
-      flex-grow: 1;
-      max-width: 600px;
-    }
-    .card.details form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .card.details label {
-      font-size: 13px;
-      color: #189d82;
-      font-weight: 600;
-    }
-    .card.details input, .card.details textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-      width: 100%;
-    }
-    .card.details button {
-      padding: 12px;
-      background-color: #189d82;
-      border: none;
-      color: white;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .card.details button:hover {
-      background-color: #147f6b;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/navbarProfile.css">
 </head>
 <body>
 
 <nav class="top-navbar">
-  <div class="logo">
-    <a href="index.html">
-      <img src="images/logo.png" alt="OptimaBank Logo" style="height: 35px;">
-    </a>
-  </div>
-  <ul>
-    <li><a href="index.html">Home Page</a></li>
-    <li><a href="voucher.html">Voucher</a></li>
-    <li class="points-badge"><a href="#">Point Balance: <?= $points ?></a></li>
-    <li><a href="cart.php"><i class="fas fa-shopping-cart"></i></a></li>
-    <li><a href="logout.php">Sign Out</a></li>
-  </ul>
+    <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+    </div>
+    <ul>
+        <li><a href="index.html">Home Page</a></li>
+        <li><a href="voucher.html">Voucher</a></li>
+        <li class="points-badge">Point Balance: <?= $points ?></li>
+        <li><a href="logout.php">Sign Out</a></li>
+    </ul>
 </nav>
 
-<div class="profile-container">
-  <div class="card profile">
-    <img src="uploads/<?= htmlspecialchars($user['profile_image'] ?: 'default-profile.jpg') ?>" alt="Profile Picture">
-    <h3><?= htmlspecialchars($user['username']) ?></h3>
-    <div class="balance-box">
-      Points Balance<br>
-      <?= $points ?>
-    </div>
-  </div>
+<div class="container">
+<div class="left-panel position-relative text-center">
 
-  <div class="card details">
-    <form method="post" action="update_profile.php" enctype="multipart/form-data">
-      <div>
-        <label>Full Name</label>
-        <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname'] ?? '') ?>">
-      </div>
-      <div>
-        <label>Username</label>
-        <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>">
-      </div>
-      <div>
-        <label>Email (readonly)</label>
-        <input type="email" value="<?= htmlspecialchars($email) ?>" readonly>
-      </div>
-      <div>
-        <label>Phone Number</label>
-        <input type="text" name="phone" value="<?= htmlspecialchars($user['phone']) ?>">
-      </div>
-      <div>
-        <label>Address</label>
-        <input type="text" name="address" value="<?= htmlspecialchars($user['address'] ?? '') ?>">
-      </div>
-      <div>
-        <label>About Me</label>
-        <textarea name="about"><?= htmlspecialchars($user['about'] ?? '') ?></textarea>
-      </div>
-      <div>
-        <label>Profile Image</label>
-        <input type="file" name="profile_image">
-      </div>
-      <button type="submit">Save</button>
-    </form>
-  </div>
+    <!-- Profile title -->
+    <div class="profile-title">Profile</div><br><br>
+
+    <!-- Profile image -->
+    <div class="profile-img-wrapper">
+        <img src="uploads/<?= htmlspecialchars($user['profile_image'] ?: 'default-profile.jpg') ?>" alt="Profile Picture" class="profile-img">
+        <div class="edit-icon" onclick="openModal('picture')"><i class="fas fa-pen"></i></div>
+    </div>
+
+    <!-- User name -->
+    <h3 class="mt-3"><?= htmlspecialchars($user['fullname'] ?? "") ?></h3>
+
+    <!-- Points balance card -->
+    <div class="points-card shadow">
+        <h5 class="mb-1 text-muted">Points Balance</h5>
+        <div class="points-value"><?= $points ?></div>
+    </div>
+
 </div>
+
+
+    <div class="right-panel">
+        <div class="info-section">
+            <h4>Personal Information</h4>
+            <p><strong>Full Name:</strong> <?= htmlspecialchars($user['fullname'] ?? "") ?></p>
+            <p><strong>Username:</strong> <?= htmlspecialchars($user['username'] ?? "") ?></p>
+            <p><strong>About Me:</strong> <?= htmlspecialchars($user['about'] ?? "") ?></p>
+            <div class="action-buttons">
+                <button onclick="openModal('profile')">Edit Profile</button>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h4>Contact Information</h4>
+            <p><strong>Email:</strong> <?= htmlspecialchars($email) ?></p>
+            <p><strong>Phone:</strong> <?= htmlspecialchars($user['phone'] ?? "") ?></p>
+            <p><strong>Street:</strong> <?= htmlspecialchars($user['street'] ?? "") ?></p>
+            <p><strong>Postcode:</strong> <?= htmlspecialchars($user['postcode'] ?? "") ?></p>
+            <p><strong>City:</strong> <?= htmlspecialchars($user['city'] ?? "") ?></p>
+            <p><strong>State:</strong> <?= htmlspecialchars($user['state'] ?? "") ?></p>
+            <div class="action-buttons">
+                <button onclick="openModal('contact')">Edit Contact</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-profile" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('profile')">&times;</span>
+        <h2>Edit Profile</h2>
+        <form method="post" action="update_profile.php">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname'] ?? "") ?>">
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" value="<?= htmlspecialchars($user['username'] ?? "") ?>">
+            </div>
+            <div class="form-group">
+                <label>About Me</label>
+                <textarea name="about"><?= htmlspecialchars($user['about'] ?? "") ?></textarea>
+            </div>
+            <button type="submit" name="update_profile">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal-contact" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('contact')">&times;</span>
+        <h2>Edit Contact</h2>
+        <form method="post" action="update_profile.php">
+            <div class="form-group"><label>Phone</label><input type="text" name="phone" value="<?= htmlspecialchars($user['phone'] ?? "") ?>"></div>
+            <div class="form-group"><label>Street</label><input type="text" name="street" value="<?= htmlspecialchars($user['street'] ?? "") ?>"></div>
+            <div class="form-group"><label>Postcode</label><input type="text" name="postcode" value="<?= htmlspecialchars($user['postcode'] ?? "") ?>"></div>
+            <div class="form-group"><label>City</label><input type="text" name="city" value="<?= htmlspecialchars($user['city'] ?? "") ?>"></div>
+            <div class="form-group"><label>State</label><input type="text" name="state" value="<?= htmlspecialchars($user['state'] ?? "") ?>"></div>
+            <button type="submit" name="update_contact">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal-picture" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('picture')">&times;</span>
+        <h2>Update Profile Picture</h2>
+        <form method="post" action="update_profile.php" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Choose New Picture</label>
+                <input type="file" name="profile_image" required>
+            </div>
+            <button type="submit" name="update_picture">Save Picture</button> </form>
+    </div>
+</div>
+
+<script>
+    function openModal(type) {
+        document.getElementById('modal-' + type).style.display = 'flex';
+    }
+    function closeModal(type) {
+        document.getElementById('modal-' + type).style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
