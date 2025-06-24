@@ -27,265 +27,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <meta charset="UTF-8" />
     <title>Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: #f7fdfc;
-            color: #333;
-        }
-
-        nav.top-navbar {
-            background: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .top-navbar .logo img {
-            height: 30px;
-        }
-
-        .top-navbar ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-            margin: 0;
-            padding: 0;
-            align-items: center; /* Align items vertically in the navbar */
-        }
-
-        .top-navbar ul li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .top-navbar .points-badge {
-            background: #f9c26b;
-            padding: 8px 15px; /* Increased padding */
-            border-radius: 20px;
-            font-weight: bold;
-            color: #333;
-            display: flex; /* Use flexbox to align icon and text */
-            align-items: center;
-            gap: 8px; /* Space between icon and text */
-        }
-
-        .top-navbar .points-badge i {
-            color: #333; /* Color for the shopping cart icon */
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-            display: flex;
-            gap: 40px;
-        }
-
-        .left-panel, .right-panel {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .left-panel {
-            width: 300px;
-            text-align: center;
-            position: relative;
-        }
-
-        .left-panel img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #e0e0e0; /* Added a subtle border to the profile image */
-        }
-
-        /* UPDATED EDIT ICON STYLES */
-        .edit-icon {
-            position: absolute;
-            top: 150px; /* Adjust as needed to position at the bottom */
-            right: 110px; /* Adjust as needed to position at the right */
-            background: #189d82; /* Light grey background */
-            border-radius: 50%;
-            padding: 8px;
-            cursor: pointer;
-            color: white; /* Dark grey pencil color */
-            border: none; /* Remove the white border */
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px; /* Slightly smaller */
-            height: 20px; /* Slightly smaller */
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
-        }
-
-        .edit-icon i.fas.fa-pen {
-            font-size: 16px; /* Adjust the size of the pen icon */
-        }
-
-        .left-panel h3 {
-            margin: 20px 0 5px;
-            color: #333; /* Match image text color */
-        }
-
-        .left-panel .point-balance {
-            margin-top: 25px; /* Increased margin for better spacing */
-            background: #eafaf5;
-            padding: 10px 20px; /* Adjusted padding */
-            border-radius: 12px;
-            font-weight: bold;
-            color: #189d82;
-            display: inline-block; /* Make it an inline block to size to content */
-            width: auto; /* Allow width to adjust */
-            min-width: 150px; /* Minimum width for the badge */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for the badge */
-        }
-
-        .right-panel {
-            flex: 1;
-            display: flex; /* Use flexbox for vertical layout */
-            flex-direction: column;
-            gap: 30px; /* Space between info sections */
-        }
-
-        .info-section {
-            padding: 20px 30px; /* Padding for the info boxes */
-            border: 1px solid #e0e0e0; /* Subtle border for the info boxes */
-            border-radius: 12px;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03); /* Lighter shadow */
-        }
-
-        .info-section h4 {
-            color: #189d82;
-            font-size: 18px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee; /* Separator for the heading */
-            padding-bottom: 10px;
-        }
-
-        .info-section p {
-            margin: 8px 0; /* Adjusted margin */
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        .info-section p strong {
-            color: #555;
-            min-width: 100px; /* Ensure labels align */
-            display: inline-block;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px; /* Keep this for spacing if buttons are placed here */
-            justify-content: flex-end; /* Align buttons to the right within their container */
-        }
-
-        .action-buttons button {
-            background-color: #189d82;
-            color: white;
-            border: none;
-            padding: 10px 20px; /* Increased padding */
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s ease; /* Smooth transition on hover */
-        }
-
-        .action-buttons button:hover {
-            background-color: #15866d; /* Darker shade on hover */
-        }
-
-        /* Modal Styles (no significant changes needed for layout matching) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 500px;
-            max-width: 90%; /* Ensure responsiveness */
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px; /* Slightly larger close icon */
-            cursor: pointer;
-            color: #777;
-        }
-
-        .modal-content h2 {
-            color: #189d82;
-            margin-bottom: 25px; /* Increased margin */
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 20px; /* Increased margin */
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px; /* Adjusted margin */
-            font-weight: 600;
-            color: #555;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: calc(100% - 20px); /* Account for padding */
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ddd; /* Lighter border */
-            font-size: 15px;
-        }
-
-        .form-group textarea {
-            resize: vertical; /* Allow vertical resizing */
-            min-height: 80px;
-        }
-
-        .form-group button {
-            display: block; /* Make button full width */
-            width: 100%;
-            margin-top: 25px; /* Increased margin */
-            padding: 12px 18px; /* Increased padding */
-            background-color: #189d82;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-group button:hover {
-            background-color: #15866d;
-        }
-    </style>
+    <link rel="stylesheet" href="css/navbarProfile.css">
 </head>
 <body>
 
@@ -302,12 +44,28 @@ $points = $pointResult ? $pointResult['points'] : 0;
 </nav>
 
 <div class="container">
-    <div class="left-panel">
-        <img src="uploads/<?= htmlspecialchars($user['profile_image'] ?: 'default-profile.jpg') ?>" alt="Profile Picture">
+<div class="left-panel position-relative text-center">
+
+    <!-- Profile title -->
+    <div class="profile-title">Profile</div><br><br>
+
+    <!-- Profile image -->
+    <div class="profile-img-wrapper">
+        <img src="uploads/<?= htmlspecialchars($user['profile_image'] ?: 'default-profile.jpg') ?>" alt="Profile Picture" class="profile-img">
         <div class="edit-icon" onclick="openModal('picture')"><i class="fas fa-pen"></i></div>
-        <h3><?= htmlspecialchars($user['fullname'] ?? "") ?></h3>
-        <div class="point-balance">Points Balance: <?= $points ?></div>
     </div>
+
+    <!-- User name -->
+    <h3 class="mt-3"><?= htmlspecialchars($user['fullname'] ?? "") ?></h3>
+
+    <!-- Points balance card -->
+    <div class="points-card shadow">
+        <h5 class="mb-1 text-muted">Points Balance</h5>
+        <div class="points-value"><?= $points ?></div>
+    </div>
+
+</div>
+
 
     <div class="right-panel">
         <div class="info-section">
