@@ -305,16 +305,16 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <div class="left-panel">
         <img src="uploads/<?= htmlspecialchars($user['profile_image'] ?: 'default-profile.jpg') ?>" alt="Profile Picture">
         <div class="edit-icon" onclick="openModal('picture')"><i class="fas fa-pen"></i></div>
-        <h3><?= htmlspecialchars($user['fullname']) ?></h3>
+        <h3><?= htmlspecialchars($user['fullname'] ?? "") ?></h3>
         <div class="point-balance">Points Balance: <?= $points ?></div>
     </div>
 
     <div class="right-panel">
         <div class="info-section">
             <h4>Personal Information</h4>
-            <p><strong>Full Name:</strong> <?= htmlspecialchars($user['fullname']) ?></p>
-            <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
-            <p><strong>About Me:</strong> <?= htmlspecialchars($user['about']) ?></p>
+            <p><strong>Full Name:</strong> <?= htmlspecialchars($user['fullname'] ?? "") ?></p>
+            <p><strong>Username:</strong> <?= htmlspecialchars($user['username'] ?? "") ?></p>
+            <p><strong>About Me:</strong> <?= htmlspecialchars($user['about'] ?? "") ?></p>
             <div class="action-buttons">
                 <button onclick="openModal('profile')">Edit Profile</button>
             </div>
@@ -323,11 +323,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
         <div class="info-section">
             <h4>Contact Information</h4>
             <p><strong>Email:</strong> <?= htmlspecialchars($email) ?></p>
-            <p><strong>Phone:</strong> <?= htmlspecialchars($user['phone']) ?></p>
-            <p><strong>Street:</strong> <?= htmlspecialchars($user['street']) ?></p>
-            <p><strong>Postcode:</strong> <?= htmlspecialchars($user['postcode']) ?></p>
-            <p><strong>City:</strong> <?= htmlspecialchars($user['city']) ?></p>
-            <p><strong>State:</strong> <?= htmlspecialchars($user['state']) ?></p>
+            <p><strong>Phone:</strong> <?= htmlspecialchars($user['phone'] ?? "") ?></p>
+            <p><strong>Street:</strong> <?= htmlspecialchars($user['street'] ?? "") ?></p>
+            <p><strong>Postcode:</strong> <?= htmlspecialchars($user['postcode'] ?? "") ?></p>
+            <p><strong>City:</strong> <?= htmlspecialchars($user['city'] ?? "") ?></p>
+            <p><strong>State:</strong> <?= htmlspecialchars($user['state'] ?? "") ?></p>
             <div class="action-buttons">
                 <button onclick="openModal('contact')">Edit Contact</button>
             </div>
@@ -342,15 +342,15 @@ $points = $pointResult ? $pointResult['points'] : 0;
         <form method="post" action="update_profile.php">
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname']) ?>">
+                <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname'] ?? "") ?>">
             </div>
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>">
+                <input type="text" name="username" value="<?= htmlspecialchars($user['username'] ?? "") ?>">
             </div>
             <div class="form-group">
                 <label>About Me</label>
-                <textarea name="about"><?= htmlspecialchars($user['about']) ?></textarea>
+                <textarea name="about"><?= htmlspecialchars($user['about'] ?? "") ?></textarea>
             </div>
             <button type="submit" name="update_profile">Save Changes</button>
         </form>
@@ -362,11 +362,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
         <span class="close" onclick="closeModal('contact')">&times;</span>
         <h2>Edit Contact</h2>
         <form method="post" action="update_profile.php">
-            <div class="form-group"><label>Phone</label><input type="text" name="phone" value="<?= htmlspecialchars($user['phone']) ?>"></div>
-            <div class="form-group"><label>Street</label><input type="text" name="street" value="<?= htmlspecialchars($user['street']) ?>"></div>
-            <div class="form-group"><label>Postcode</label><input type="text" name="postcode" value="<?= htmlspecialchars($user['postcode']) ?>"></div>
-            <div class="form-group"><label>City</label><input type="text" name="city" value="<?= htmlspecialchars($user['city']) ?>"></div>
-            <div class="form-group"><label>State</label><input type="text" name="state" value="<?= htmlspecialchars($user['state']) ?>"></div>
+            <div class="form-group"><label>Phone</label><input type="text" name="phone" value="<?= htmlspecialchars($user['phone'] ?? "") ?>"></div>
+            <div class="form-group"><label>Street</label><input type="text" name="street" value="<?= htmlspecialchars($user['street'] ?? "") ?>"></div>
+            <div class="form-group"><label>Postcode</label><input type="text" name="postcode" value="<?= htmlspecialchars($user['postcode'] ?? "") ?>"></div>
+            <div class="form-group"><label>City</label><input type="text" name="city" value="<?= htmlspecialchars($user['city'] ?? "") ?>"></div>
+            <div class="form-group"><label>State</label><input type="text" name="state" value="<?= htmlspecialchars($user['state'] ?? "") ?>"></div>
             <button type="submit" name="update_contact">Save Changes</button>
         </form>
     </div>
