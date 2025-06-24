@@ -3,7 +3,7 @@ session_start();
 $token = $_GET['token'] ?? '';
 
 $conn = new mysqli('localhost', 'root', '', 'optimabank');
-$stmt = $conn->prepare("SELECT * FROM users WHERE reset_token=? AND token_expires > NOW()");
+$stmt = $conn->prepare("SELECT * FROM users WHERE reset_token=? AND token_expires");
 $stmt->bind_param("s", $token);
 $stmt->execute();
 $result = $stmt->get_result();
