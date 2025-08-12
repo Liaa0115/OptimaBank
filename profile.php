@@ -28,6 +28,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <title>Optima Bank | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/navbarProfile.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/navbarProfile.css">
 </head>
 <body>
 
@@ -51,7 +52,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
 <div class="left-panel position-relative text-center">
 
     <!-- Profile title -->
+<<<<<<< HEAD
     <div class="profile-title">Profile</div><br>
+=======
+    <div class="profile-title">Profile</div><br><br>
+>>>>>>> 13db4e97742b2b83f39991e7e0a80a14d77ab84a
 
     <!-- Profile image -->
     <div class="profile-img-wrapper">
