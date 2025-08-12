@@ -7,18 +7,22 @@ include 'conn.php';
 //     exit();
 // }
 
-// $email = $_SESSION['email'];
+$points = 0; // Default points
 
-$stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
 
-$pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
-$pointStmt->bind_param("s", $email);
-$pointStmt->execute();
-$pointResult = $pointStmt->get_result()->fetch_assoc();
-$points = $pointResult ? $pointResult['points'] : 0;
+    $stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $user = $stmt->get_result()->fetch_assoc();
+
+    $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
+    $pointStmt->bind_param("s", $email);
+    $pointStmt->execute();
+    $pointResult = $pointStmt->get_result()->fetch_assoc();
+    $points = $pointResult ? $pointResult['points'] : 0;
+}
 ?>
 
 <!doctype html>
@@ -230,11 +234,15 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home Page</a></li>
         <li class="nav-item"><a class="nav-link" href="voucher.html">Voucher</a></li>
-        <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
-        <li class="nav-item points-badge d-flex align-items-center">
-          Point Balance: <?= $points ?>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">Sign Out</a></li>
+        <?php if (isset($_SESSION['email'])): ?>
+          <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
+          <li class="nav-item points-badge d-flex align-items-center">
+            Point Balance: <?= $points ?>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="logout.php">Sign Out</a></li>
+          <?php else: ?>
+        <li class="nav-item"><a class="nav-item points-badge d-flex align-items-center" style="text-decoration: none;" href="authentication/login.php">Login</a></li>
+      <?php endif; ?>
       </ul>
     </div>
   </div>
