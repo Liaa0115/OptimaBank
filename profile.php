@@ -25,18 +25,23 @@ $points = $pointResult ? $pointResult['points'] : 0;
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Profile</title>
+    <title>Optima Bank | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/navbarProfile.css?v=<?= time() ?>">
     <link rel="stylesheet" href="css/navbarProfile.css">
 </head>
 <body>
 
 <nav class="top-navbar">
-    <div class="logo">
-        <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
-    </div>
+  <div class="logo">
+    <a href="index.php">
+        <img src="images/logo.png" alt="Logo" height="36">
+    </a>
+    <span>TREATS POINTS</span>
+</div>
+
     <ul>
-        <li><a href="index.html">Home Page</a></li>
+        <li><a href="index.php">Home Page</a></li>
         <li><a href="voucher.html">Voucher</a></li>
         <li class="points-badge">Point Balance: <?= $points ?></li>
         <li><a href="logout.php">Sign Out</a></li>
@@ -47,7 +52,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
 <div class="left-panel position-relative text-center">
 
     <!-- Profile title -->
+<<<<<<< HEAD
+    <div class="profile-title">Profile</div><br>
+=======
     <div class="profile-title">Profile</div><br><br>
+>>>>>>> 13db4e97742b2b83f39991e7e0a80a14d77ab84a
 
     <!-- Profile image -->
     <div class="profile-img-wrapper">
