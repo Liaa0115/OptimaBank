@@ -2,12 +2,12 @@
 session_start();
 include 'conn.php';
 
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+// if (!isset($_SESSION['email'])) {
+//     header("Location: login.php");
+//     exit();
+// }
 
-$email = $_SESSION['email'];
+// $email = $_SESSION['email'];
 
 $stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);

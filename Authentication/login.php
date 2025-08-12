@@ -95,12 +95,12 @@
   
  <nav class="top-navbar">
   <div class="logo">
-    <a href="index.html">
+    <a href="../index.php">
       <img src="../images/logo.png" alt="OptimaBank Logo" style="height: 30px;">
     </a>
   </div>
   <ul>
-    <li><a href="index.html">Home</a></li>
+    <li><a href="../index.php">Home</a></li>
     <li><a href="voucher.html">Voucher</a></li>
     <li><a href="register.php">Sign Up</a></li>
   </ul>
