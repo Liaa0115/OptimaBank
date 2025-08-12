@@ -1,104 +1,369 @@
-.top-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  width: 100%;
-  background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Segoe UI', sans-serif;
-  z-index: 999;
+/* Variables from index.php */
+:root {
+    --mb-yellow: #ffc600;
+    --mb-black: #0f6f4a;
+    --muted: #6c757d;
 }
 
+/* Base */
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: #f8f9fb;
+    color: #222;
+}
+
+/* Navbar */
+nav.top-navbar {
+    background: var(--mb-black);
+    display: flex;
+    justify-content: space-around; /* jarak seimbang kiri kanan */
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.top-navbar .logo {
+    display: flex;
+    align-items: center; /* align vertical tengah */
+}
+
+.top-navbar .logo span {
+    margin-left: 8px; /* jarak antara logo & teks */
+    color: var(--mb-yellow);
+    font-weight: 700;
+    font-size: 18px; /* besarkan tulisan */
+    line-height: 1; /* elak tulisan nampak senget */
+}
+
+
 .top-navbar .logo img {
-  height: 40px;
-  display: block;
+    height: 28px;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
 }
 
 .top-navbar ul {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-   margin-right: 40px;
-  padding: 0;
-}
-
-.top-navbar ul li {
-  display: flex;
-  align-items: center;
-  height: 100%; /* match parent height */
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
 }
 
 .top-navbar ul li a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  white-space: nowrap;
-  height: 100%;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
 .top-navbar ul li a:hover {
-  background-color: #f0f4ff;
-  color: #1a73e8;
+    color: var(--mb-yellow);
 }
 
-/* Highlighted points badge */
-.top-navbar ul li.points-badge a {
-  background-color: #e8cfa2;
-  font-weight: 600;
-  color: #222;
-  border-radius: 20px;
-  padding: 8px 18px;
+/* Points badge */
+.top-navbar .points-badge {
+    background: var(--mb-yellow);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: var(--mb-black);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Shopping cart icon */
-.top-navbar ul li a i {
-  font-size: 18px;
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    gap: 40px;
 }
 
-/* Responsive fallback */
-@media (max-width: 992px) {
-  .top-navbar {
-    flex-direction: column;
-    height: auto;
-    padding: 15px;
-    align-items: flex-start;
-  }
+/* Panels */
+.left-panel, .right-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.left-panel {
+    flex: 0 0 300px; /* fixed width */
+}
 
-  .top-navbar ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+.right-panel {
+    flex: 1; /* take remaining space */
+}
+
+.left-panel img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #e0e0e0;
+}
+.left-panel {
+    text-align: center; /* center text and inline elements */
+}
+
+.profile-img-wrapper {
+    display: inline-block; /* keep wrapper tight around image */
+}
+
+.left-panel h3 {
+    margin: 20px 0 5px;
+    color: #333;
+    text-align: center; /* ensure the name is centered */
+}
+
+/* Edit icon */
+.edit-icon {
+    position: absolute;
+    top: 130px;
+    right: 110px;
+    background: var(--mb-black);
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.edit-icon i.fas.fa-pen {
+    font-size: 16px;
+}
+
+/* Text */
+.left-panel h3 {
+    margin: 20px 0 5px;
+    color: #333;
+}
+
+/* Point balance */
+.left-panel .point-balance {
+    margin-top: 25px;
+    background: #eafaf5;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: var(--mb-black);
+    display: inline-block;
+    min-width: 150px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Info sections */
+.info-section {
+    padding: 20px 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.info-section h4 {
+    color: var(--mb-black);
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.info-section p {
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.info-section p strong {
+    color: #555;
+    min-width: 100px;
+    display: inline-block;
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.action-buttons button {
+    background-color: var(--mb-black);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.action-buttons button:hover {
+    background-color: #0d5a3c;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #777;
+}
+
+.modal-content h2 {
+    color: var(--mb-black);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group button {
+    display: block;
     width: 100%;
-  }
-
-  .top-navbar ul li a {
-    width: 100%;
-  }
+    margin-top: 25px;
+    padding: 12px 18px;
+    background-color: var(--mb-black);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.points-badge a {
-  background-color: #e8cfa2;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 600;
-  color: #333;
-  display: inline-block;
+.form-group button:hover {
+    background-color: #0d5a3c;
 }
 
-/* Prevent content from hiding behind navbar */
-body {
-  padding-top: 75px;
-  margin: 0;
+.left-panel {
+    position: relative;
+    background: #fff;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.profile-title {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    color: #15866d;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.profile-img-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #15866d;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #15866d;
+    color: white;
+    border-radius: 50%;
+    padding: 6px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.points-card {
+   background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border-radius: 16px;
+    padding: 25px 20px;
+    margin-top: 30px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 114, 255, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.points-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 114, 255, 0.3);
+}
+
+.points-card h5 {
+    font-size: 16px;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.points-value {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
 }
