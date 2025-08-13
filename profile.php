@@ -28,7 +28,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <title>Optima Bank | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/navbarProfile.css?v=<?= time() ?>">
-    <link rel="stylesheet" href="css/navbarProfile.css">
+    <!-- <link rel="stylesheet" href="css/navbarProfile.css"> -->
 </head>
 <body>
 
@@ -42,8 +42,13 @@ $points = $pointResult ? $pointResult['points'] : 0;
 
     <ul>
         <li><a href="index.php">Home Page</a></li>
-        <li><a href="voucher.html">Voucher</a></li>
+        <li><a href="voucher_list.php">Voucher</a></li>
         <li class="points-badge">Point Balance: <?= $points ?></li>
+        <li class="nav-item">
+            <a class="nav-link cart-icon" href="cart.php">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+          </li>
         <li><a href="logout.php">Sign Out</a></li>
     </ul>
 </nav>

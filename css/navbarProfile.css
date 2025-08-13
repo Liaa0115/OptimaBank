@@ -5,22 +5,6 @@
     --muted: #6c757d;
 }
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f7fdfb;
-  color: #333;
-}
-
-nav.top-navbar {
-  background: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
 /* Base */
 body {
     margin: 0;
@@ -35,8 +19,17 @@ nav.top-navbar {
     display: flex;
     justify-content: space-around; /* jarak seimbang kiri kanan */
     align-items: center;
-    padding: 15px 40px;
+    padding: 10px 40px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+
+.top-navbar .logo img {
+    height: 26px;
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
 }
 .top-navbar .logo {
     display: flex;
@@ -47,22 +40,14 @@ nav.top-navbar {
     margin-left: 8px; /* jarak antara logo & teks */
     color: var(--mb-yellow);
     font-weight: 700;
-    font-size: 18px; /* besarkan tulisan */
+    font-size: 20px; /* besarkan tulisan */
     line-height: 1; /* elak tulisan nampak senget */
-}
-
-
-.top-navbar .logo img {
-    height: 28px;
-    border-radius: 6px;
-    background: white;
-    padding: 4px;
 }
 
 .top-navbar ul {
     list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 10px;
     margin: 0;
     padding: 0;
     align-items: center;
@@ -78,6 +63,11 @@ nav.top-navbar {
 .top-navbar ul li a:hover {
     color: var(--mb-yellow);
 }
+.top-navbar ul li.nav-item {
+    margin-left: 0.1px; /* jarak sebelah kiri cart */
+    margin-right: 1px; /* jarak sebelah kanan cart */
+}
+
 
 /* Points badge */
 .top-navbar .points-badge {
@@ -383,3 +373,33 @@ nav.top-navbar {
     letter-spacing: 1px;
     color: #fff;
 }
+.points-badge {
+    margin-right: 1px; /* jarak badge ke icon cart */
+}
+
+.cart-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white; /* sebelum hover putih */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f6f4a; /* icon hijau */
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.cart-icon i {
+    font-size: 18px;
+    color: #0f6f4a; /* kekalkan hijau */
+}
+
+.cart-icon:hover {
+    background-color: #ffc600; /* hover jadi kuning */
+}
+
+.cart-icon:hover i {
+    color: #0f6f4a; /* pastikan icon kekal hijau */
+}
+
