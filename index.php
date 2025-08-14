@@ -23,6 +23,7 @@ if (isset($_SESSION['email'])) {
     $pointResult = $pointStmt->get_result()->fetch_assoc();
     $points = $pointResult ? $pointResult['points'] : 0;
 }
+
 ?>
 
 <!doctype html>
@@ -202,6 +203,40 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
   background-color: #ffc600 !important;
   border-color: #ffc600 !important;
 }
+.category-tile {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.category-tile:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.cart-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white; /* sebelum hover putih */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f6f4a; /* icon hijau */
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.cart-icon i {
+    font-size: 18px;
+    color: #0f6f4a; /* kekalkan hijau */
+}
+
+.cart-icon:hover {
+    background-color: #ffc600; /* hover jadi kuning */
+}
+
+.cart-icon:hover i {
+    color: #0f6f4a; /* pastikan icon kekal hijau */
+}
 
 </style>
 </head>
@@ -233,11 +268,16 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home Page</a></li>
-        <li class="nav-item"><a class="nav-link" href="voucher.html">Voucher</a></li>
+        <li class="nav-item"><a class="nav-link" href="voucher_list.php">Voucher</a></li>
         <?php if (isset($_SESSION['email'])): ?>
           <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
           <li class="nav-item points-badge d-flex align-items-center">
             Point Balance: <?= $points ?>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link cart-icon" href="cart.php">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
           </li>
           <li class="nav-item"><a class="nav-link" href="logout.php">Sign Out</a></li>
           <?php else: ?>
@@ -255,104 +295,105 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
     <div class="carousel-inner">
 
       <!-- Slide 1 -->
-      <div class="carousel-item active">
-        <div class="container">
-          <div class="row align-items-center g-4 hero-slide">
-            <div class="col-md-6 text-center text-md-start">
-              <span class="badge-feature">Weekly Spotlight</span>
-              <h2 class="mt-3">Up to 50% off at top restaurants & outlets</h2>
-              <p class="text-muted">Redeem rewards with your card or app — limited time only.</p>
-              <div class="mt-3">
-                <a href="#" class="btn btn-dark me-2">Explore deals</a>
-                <a href="#" class="btn btn-outline-dark">How it works</a>
-              </div>
-            </div>
-            <div class="col-md-6 text-center hero-img-container">
-              <img src="images/promo.jpg" class="hero-img" alt="promo">
-            </div>
-          </div>
+<div class="carousel-item active">
+  <div class="container">
+    <div class="row align-items-center g-4 hero-slide">
+      <div class="col-md-6 text-center text-md-start">
+        <span class="badge-feature">Weekly Spotlight</span>
+        <h2 class="mt-3">Up to 50% Off on Popular Dishes</h2>
+        <p class="text-muted">Enjoy mouth-watering meals from top restaurants at unbeatable prices — this week only.</p>
+        <div class="mt-3">
+          <a href="#" class="btn btn-dark me-2">Explore Menu</a>
+          <a href="#" class="btn btn-outline-dark">See Details</a>
         </div>
       </div>
+      <div class="col-md-6 text-center hero-img-container">
+        <img src="images/p1.jpg" class="hero-img" alt="promo">
+      </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Slide 2 -->
-      <div class="carousel-item">
-        <div class="container">
-          <div class="row align-items-center g-4 hero-slide">
-            <div class="col-md-6 text-center text-md-start">
-              <span class="badge-feature">New</span>
-              <h2 class="mt-3">Exclusive Cashback for cardholders</h2>
-              <p class="text-muted">Stack rewards and save more on everyday spends.</p>
-              <div class="mt-3">
-                <a href="#" class="btn btn-dark me-2">Get Cashback</a>
-                <a href="#" class="btn btn-outline-dark">Learn more</a>
-              </div>
-            </div>
-            <div class="col-md-6 text-center hero-img-container">
-              <img src="images/promo1.jpg" class="hero-img" alt="promo2">
-            </div>
-          </div>
+<!-- Slide 2 -->
+<div class="carousel-item">
+  <div class="container">
+    <div class="row align-items-center g-4 hero-slide">
+      <div class="col-md-6 text-center text-md-start">
+        <span class="badge-feature">New</span>
+        <h2 class="mt-3">Exclusive Dining Rewards</h2>
+        <p class="text-muted">Earn cashback while enjoying your favorite meals at selected outlets.</p>
+        <div class="mt-3">
+          <a href="#" class="btn btn-dark me-2">Dine & Earn</a>
+          <a href="#" class="btn btn-outline-dark">Learn More</a>
         </div>
       </div>
+      <div class="col-md-6 text-center hero-img-container">
+        <img src="images/p2.jpg" class="hero-img" alt="promo2">
+      </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Slide 3 -->
-        <div class="carousel-item">
-        <div class="container">
-            <div class="row align-items-center g-4 hero-slide">
-            <div class="col-md-6 text-center text-md-start">
-                <span class="badge-feature">Limited Time</span>
-                <h2 class="mt-3">Special Deals on Travel & Dining</h2>
-                <p class="text-muted">Enjoy up to 50% off at selected hotels and restaurants worldwide.</p>
-                <div class="mt-3">
-                <a href="#" class="btn btn-dark me-2">Book Now</a>
-                <a href="#" class="btn btn-outline-dark">View Offers</a>
-                </div>
-            </div>
-            <div class="col-md-6 text-center hero-img-container">
-                <img src="images/airasia.jpg" class="hero-img" alt="promo3">
-            </div>
-            </div>
+<!-- Slide 3 -->
+<div class="carousel-item">
+  <div class="container">
+    <div class="row align-items-center g-4 hero-slide">
+      <div class="col-md-6 text-center text-md-start">
+        <span class="badge-feature">Limited Time</span>
+        <h2 class="mt-3">Special Offers on Global Cuisine</h2>
+        <p class="text-muted">Taste the best from around the world — from Italian pasta to Japanese sushi.</p>
+        <div class="mt-3">
+          <a href="#" class="btn btn-dark me-2">Book a Table</a>
+          <a href="#" class="btn btn-outline-dark">View Deals</a>
         </div>
-        </div>
+      </div>
+      <div class="col-md-6 text-center hero-img-container">
+        <img src="images/p3.jpg" class="hero-img" alt="promo3">
+      </div>
+    </div>
+  </div>
+</div>
 
-        <!-- Slide 4 -->
-        <div class="carousel-item">
-        <div class="container">
-            <div class="row align-items-center g-4 hero-slide">
-            <div class="col-md-6 text-center text-md-start">
-                <span class="badge-feature">Hot Deal</span>
-                <h2 class="mt-3">Skintific Skincare – 60% OFF</h2>
-                <p class="text-muted">Reveal your best skin yet with dermatologist-approved products at unbeatable prices.</p>
-                <div class="mt-3">
-                <a href="#" class="btn btn-dark me-2">Shop Now</a>
-                <a href="#" class="btn btn-outline-dark">Learn More</a>
-                </div>
-            </div>
-            <div class="col-md-6 text-center hero-img-container">
-                <img src="images/promo3.png" class="hero-img" alt="Skintific 60% Off">
-            </div>
-            </div>
+<!-- Slide 4 -->
+<div class="carousel-item">
+  <div class="container">
+    <div class="row align-items-center g-4 hero-slide">
+      <div class="col-md-6 text-center text-md-start">
+        <span class="badge-feature">Hot Deal</span>
+        <h2 class="mt-3">Up to 60% Off on Desserts</h2>
+        <p class="text-muted">Indulge in creamy cakes, rich chocolates, and sweet treats at irresistible prices.</p>
+        <div class="mt-3">
+          <a href="#" class="btn btn-dark me-2">Order Now</a>
+          <a href="#" class="btn btn-outline-dark">More Sweets</a>
         </div>
-        </div>
+      </div>
+      <div class="col-md-6 text-center hero-img-container">
+        <img src="images/p5.jpg" class="hero-img" alt="Dessert Deals">
+      </div>
+    </div>
+  </div>
+</div>
 
-        <!-- Slide 5 -->
-        <div class="carousel-item">
-        <div class="container">
-            <div class="row align-items-center g-4 hero-slide">
-            <div class="col-md-6 text-center text-md-start">
-                <span class="badge-feature">Best Seller</span>
-                <h2 class="mt-3">Samsung Electronics Mega Sale</h2>
-                <p class="text-muted">Save big on the latest Samsung smartphones, TVs, and home appliances.</p>
-                <div class="mt-3">
-                <a href="#" class="btn btn-dark me-2">Shop Now</a>
-                <a href="#" class="btn btn-outline-dark">Browse All</a>
-                </div>
-            </div>
-            <div class="col-md-6 text-center hero-img-container">
-                <img src="images/promo4.jpg" class="hero-img" alt="Samsung Electronics">
-            </div>
-            </div>
+<!-- Slide 5 -->
+<div class="carousel-item">
+  <div class="container">
+    <div class="row align-items-center g-4 hero-slide">
+      <div class="col-md-6 text-center text-md-start">
+        <span class="badge-feature">Best Seller</span>
+        <h2 class="mt-3">Signature Dishes You Can’t Miss</h2>
+        <p class="text-muted">From juicy burgers to aromatic curries — savor our most-loved dishes today.</p>
+        <div class="mt-3">
+          <a href="#" class="btn btn-dark me-2">Order Now</a>
+          <a href="#" class="btn btn-outline-dark">See Menu</a>
         </div>
-        </div>
+      </div>
+      <div class="col-md-6 text-center hero-img-container">
+        <img src="images/p4.jpg" class="hero-img" alt="Best Seller Dishes">
+      </div>
+    </div>
+  </div>
+</div>
+
 
     </div>
 
@@ -367,81 +408,127 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
   </div>
 </div>
 
-          <!-- Categories -->
-          <div class="row mt-4 g-3">
-            <div class="col-6 col-md-4">
-              <div class="category-tile">
-                <i class="fa fa-utensils fa-2x mb-2"></i>
-                <div class="fw-bold">Food & Beverage</div>
-                <small class="text-muted">Dining & delivery</small>
-              </div>
-            </div>
-            <div class="col-6 col-md-4">
-              <div class="category-tile">
-                <i class="fa fa-shopping-bag fa-2x mb-2"></i>
-                <div class="fw-bold">Retail</div>
-                <small class="text-muted">Shopping deals</small>
-              </div>
-            </div>
-            <div class="col-6 col-md-4">
-              <div class="category-tile">
-                <i class="fa fa-ticket-alt fa-2x mb-2"></i>
-                <div class="fw-bold">Entertainment</div>
-                <small class="text-muted">Movies & events</small>
-              </div>
-            </div>
-          </div>
+<!-- Categories -->
+<div class="row mt-4 g-3">
+  <div class="col-6 col-md-4">
+    <a href="voucher_list.php?subcategory=Western Food" class="btn btn-light w-100 category-tile p-3 text-center">
+    <i class="fa fa-hamburger fa-2x mb-2"></i>
+    <div class="fw-bold">Western Food</div>
+    <small class="text-muted">Savor rich flavors inspired by the best of Western cuisine</small>
+  </a>
+
+  </div>
+  <div class="col-6 col-md-4">
+    <a href="voucher_list.php?subcategory=Malay Food" class="btn btn-light w-100 category-tile p-3 text-center">
+    <i class="fa fa-drumstick-bite fa-2x mb-2"></i>
+    <div class="fw-bold">Malay Food</div>
+    <small class="text-muted">Experience the authentic taste of Malaysia’s heritage</small>
+  </a>
+  </div>
+  <div class="col-6 col-md-4">
+    <a href="voucher_list.php?subcategory=Chinese Food" class="btn btn-light w-100 category-tile p-3 text-center">
+    <i class="fa fa-bowl-rice fa-2x mb-2"></i>
+    <div class="fw-bold">Chinese Food</div>
+    <small class="text-muted">Enjoy timeless Chinese recipes bursting with tradition</small>
+  </a>
+  </div>
+</div>
+
+
 
          <!-- Featured deals -->
 <div class="container my-5">
+
   <h5 class="text-center mb-4">Featured Deals</h5>
+ <!-- Search Bar -->
+<div class="mb-4 text-center">
+  <div class="position-relative w-50 mx-auto">
+    <i class="fa fa-search position-absolute" 
+       style="left: 15px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+    <input type="text" id="dealSearch" class="form-control ps-5 py-2 rounded-pill shadow-sm"
+           placeholder="Search deals..." 
+           style="border: 1px solid #ddd; transition: all 0.3s;">
+  </div>
+</div>
+
+<!-- Extra styling -->
+<style>
+  #dealSearch:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  }
+</style>
+
+  
   <div class="row justify-content-center g-4">
 
     <!-- Deal 1 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/iphone.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Apple Products</div>
+        <img src="images/v9.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Chinese Cuisine</div>
         <div class="text-muted small">Up to 30% off on selected items</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
+
       </div>
     </div>
 
     <!-- Deal 2 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/zus2.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">ZUS Coffee</div>
+        <img src="images/v2.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Malay Cuisine</div>
         <div class="text-muted small">RM10 off with min spend RM40</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
     <!-- Deal 3 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/travel1.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Travel Deals</div>
-        <div class="text-muted small">Save up to RM200 on flights</div>
+        <img src="images/v3.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Western Cuisine</div>
+        <div class="text-muted small">Save up to RM20</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
      <!-- Deal 4 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/mcd.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Mc Donald's</div>
+        <img src="images/v10.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Chinese Cuisine</div>
         <div class="text-muted small">Limited time offer Gong Xi Savings Bundle</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
@@ -449,59 +536,84 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
         <img src="images/mb.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Marrybrown Products</div>
-        <div class="text-muted small">20% MB Gift Voucher + 1pcs Jurassic World Pillow </div>
+        <div class="fw-bold">Malay Cuisine</div>
+        <div class="text-muted small">Limited 30 sets only + FREE Fish Meehoon Soup</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
     <!-- Deal 6 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/starbucks.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Starbucks Coffee</div>
-        <div class="text-muted small">Only RM8.80 for Tall-sized handcrafted beverage</div>
+        <img src="images/v11.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Chinese Cuisine</div>
+        <div class="text-muted small">Up to RM14 Off</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
     <!-- Deal 7 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/xiaomi.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Xiaomi Products</div>
-        <div class="text-muted small">Only for RM 729 for Redmi 15 5G limited time offer</div>
+        <img src="images/v5.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Western Cuisine</div>
+        <div class="text-muted small">Tex Deals Tasty Singles for only RM 7.50 each</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
      <!-- Deal 8 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/oppo.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Oppo Products</div>
-        <div class="text-muted small">Save up to RM200 on discounts</div>
+        <img src="images/v7.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Malay Cuisine</div>
+        <div class="text-muted small">Discount 50% for 2nd items</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
     <!-- Deal 9 -->
     <div class="col-md-4 col-sm-6">
       <div class="p-3 bg-white deal-card text-center">
-        <img src="images/eucerin.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Eucerins Products</div>
-        <div class="text-muted small">Buy 1 Free 1 starting 30 July until 1 Sept</div>
+        <img src="images/v12.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
+        <div class="fw-bold">Western Cuisine</div>
+        <div class="text-muted small">50% OFF on Regular size Pizza via Apps</div>
         <div class="mt-3">
-          <a href="#" class="btn btn-sm btn-dark">Redeem</a>
-        </div>
+        <a href="#" class="btn btn-sm btn-dark">
+          <i class="fa fa-gift me-1"></i> Redeem
+        </a>
+        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+          <i class="fa fa-shopping-cart"></i>
+        </a>
+      </div>
       </div>
     </div>
 
@@ -557,11 +669,11 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
       </div>
 
       <!-- More sections -->
-      <div class="row mt-5">
+      <!-- <div class="row mt-5">
         <div class="col-12">
           <center><h5>All Categories</h5></center>
           <div class="mt-3 row g-3">
-            <!-- Repeat tiles -->
+          
             <div class="col-6 col-md-3">
               <div class="category-tile">Groceries</div>
             </div>
@@ -576,7 +688,7 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </main>
@@ -585,11 +697,11 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h6 class="text-white">MyTreats Demo</h6>
-          <p class="small text-muted">This is a demo clone for layout and styling only — replace images and copy with your own assets.</p>
+          <h6 class="text-white">OptimaBank<span style="margin-left:6px;color:var(--mb-yellow); font-weight:700;">TREATS POINTS</span></h6>
+          <p class="small text-white">OptimaBank | 2025 | All Right Reserved ©.</p>
         </div>
-        <div class="col-md-6 text-md-end small text-muted">
-          <div>© Your Company • Terms • Privacy</div>
+        <div class="col-md-6 text-md-end small text-white">
+          <div>© OptimaBank • Terms • Privacy</div>
         </div>
       </div>
     </div>
@@ -606,5 +718,30 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
       navBtns[e.to].classList.add('active');
     });
   </script>
+    <!-- Bootstrap Tooltip Init -->
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      </script>
+<!-- Search Script -->
+<script>
+  document.getElementById('dealSearch').addEventListener('keyup', function() {
+    let filter = this.value.toLowerCase();
+    let deals = document.querySelectorAll('.deal-card-item');
+
+    deals.forEach(function(deal) {
+      let title = deal.querySelector('.fw-bold').textContent.toLowerCase();
+      let desc = deal.querySelector('.text-muted').textContent.toLowerCase();
+
+      if (title.includes(filter) || desc.includes(filter)) {
+        deal.style.display = '';
+      } else {
+        deal.style.display = 'none';
+      }
+    });
+  });
+</script>
 </body>
 </html>
