@@ -71,21 +71,19 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
         height: 180px;
         object-fit: cover;
     }
-
     .cart-icon {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background-color: white; /* Or a light gray color */
+        background-color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #0f6f4a; /* Color of the cart icon */
+        color: #0f6f4a;
         margin-left: 10px;
     }
-
     .cart-icon i {
-        font-size: 18px; /* Adjust size of the icon */
+        font-size: 18px;
     }
     .cart-icon:hover {
         background-color: #ffc600;
@@ -110,7 +108,7 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php" style="color: #f9f9f9;">Home Page</a></li>
-        <li class="nav-item"><a class="nav-link" href="voucher.php" style="color: #f9f9f9;">Voucher</a></li>
+        <li class="nav-item"><a class="nav-link" href="voucher_list.php" style="color: #f9f9f9;">Voucher</a></li>
         <?php if (isset($_SESSION['email'])): ?>
           <li class="nav-item"><a class="nav-link" href="profile.php" style="color: #f9f9f9;">Profile</a></li>
           <li class="nav-item points-badge d-flex align-items-center" style="text-decoration: none; color: #0f6f4a; background-color: #ffc600 !important; border-color: #ffc600 !important;">
@@ -152,15 +150,22 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
 
       <hr>
 
+      <!-- Search by voucher name -->
+      <h5 class="fw-bold">SEARCH</h5>
+      <input type="text" id="search-name" class="form-control mb-3" placeholder="Search voucher name...">
+
+      <hr>
+
+      <!-- Filter by points -->
       <div class="d-flex justify-content-between align-items-center">
-          <h5 class="fw-bold mb-0">PRICE</h5>
-          <a href="#" id="price-clear-btn" class="text-muted text-decoration-none">Clear</a>
+          <h5 class="fw-bold mb-0">POINTS</h5>
+          <a href="#" id="points-clear-btn" class="text-muted text-decoration-none">Clear</a>
       </div>
 
-      <div class="d-flex align-items-center mb-2">
-          <input type="text" class="form-control me-2" id="min-price" placeholder="Min RM">
-          <input type="text" class="form-control" id="max-price" placeholder="Max RM">
-          <button class="btn btn-outline-secondary ms-2" id="price-search-btn">
+      <div class="d-flex align-items-center mb-2 mt-2">
+          <input type="text" class="form-control me-2" id="min-points" placeholder="Min Points">
+          <input type="text" class="form-control" id="max-points" placeholder="Max Points">
+          <button class="btn btn-outline-secondary ms-2" id="points-search-btn">
               <i class="fa-solid fa-magnifying-glass"></i>
           </button>
       </div>
@@ -173,8 +178,8 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
         <div>
           <select class="form-select form-select-sm">
             <option>Newest</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
+            <option>Points: Low to High</option>
+            <option>Points: High to Low</option>
           </select>
         </div>
       </div>
@@ -182,7 +187,10 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
       <div class="row g-3" id="voucher-list">
         <?php if (!empty($vouchers)): ?>
           <?php foreach ($vouchers as $voucher): ?>
-            <div class="col-md-4 voucher-item" data-subcategory="<?= htmlspecialchars($voucher['subcategory']) ?>">
+            <div class="col-md-4 voucher-item" 
+                 data-subcategory="<?= htmlspecialchars($voucher['subcategory']) ?>" 
+                 data-points="<?= $voucher['points_required'] ?>" 
+                 data-name="<?= strtolower(htmlspecialchars($voucher['name'])) ?>">
               <div class="voucher-card">
                 <img src="<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
                 <div class="p-3">
@@ -193,7 +201,7 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
                   <div class="d-flex justify-content-between">
                     <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-warning btn-sm">Redeem Now</a>
                     <button class="btn btn-success btn-sm">Add to Cart</button>
-                </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -211,48 +219,31 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
 document.addEventListener("DOMContentLoaded", function() {
     const checkboxes = document.querySelectorAll(".subcategory-filter");
     const vouchers = document.querySelectorAll(".voucher-item");
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener("change", function() {
-            const selected = Array.from(checkboxes)
-                                  .filter(c => c.checked)
-                                  .map(c => c.value);
-
-            vouchers.forEach(voucher => {
-                const subcat = voucher.getAttribute("data-subcategory");
-                if (selected.length === 0 || selected.includes(subcat)) {
-                    voucher.style.display = "block";
-                } else {
-                    voucher.style.display = "none";
-                }
-            });
-        });
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    const checkboxes = document.querySelectorAll(".subcategory-filter");
-    const vouchers = document.querySelectorAll(".voucher-item");
-    const minPriceInput = document.getElementById("min-price");
-    const maxPriceInput = document.getElementById("max-price");
-    const priceSearchBtn = document.getElementById("price-search-btn");
+    const minPointsInput = document.getElementById("min-points");
+    const maxPointsInput = document.getElementById("max-points");
+    const pointsSearchBtn = document.getElementById("points-search-btn");
+    const pointsClearBtn = document.getElementById("points-clear-btn");
+    const searchNameInput = document.getElementById("search-name");
 
     function filterVouchers() {
         const selectedSubcategories = Array.from(checkboxes)
             .filter(c => c.checked)
             .map(c => c.value);
 
-        const minPrice = parseFloat(minPriceInput.value) || 0;
-        const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+        const minPoints = parseFloat(minPointsInput.value) || 0;
+        const maxPoints = parseFloat(maxPointsInput.value) || Infinity;
+        const searchTerm = searchNameInput.value.toLowerCase().trim();
 
         vouchers.forEach(voucher => {
             const subcat = voucher.getAttribute("data-subcategory");
-            const price = parseFloat(voucher.querySelector('p:nth-of-type(2)').textContent.replace('RM ', '').replace(',', ''));
+            const points = parseFloat(voucher.getAttribute("data-points"));
+            const name = voucher.getAttribute("data-name");
 
             const matchesSubcategory = selectedSubcategories.length === 0 || selectedSubcategories.includes(subcat);
-            const matchesPrice = price >= minPrice && price <= maxPrice;
+            const matchesPoints = points >= minPoints && points <= maxPoints;
+            const matchesName = name.includes(searchTerm);
 
-            if (matchesSubcategory && matchesPrice) {
+            if (matchesSubcategory && matchesPoints && matchesName) {
                 voucher.style.display = "block";
             } else {
                 voucher.style.display = "none";
@@ -260,60 +251,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    checkboxes.forEach(cb => {
-        cb.addEventListener("change", filterVouchers);
-    });
-
-    priceSearchBtn.addEventListener("click", filterVouchers);
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    const checkboxes = document.querySelectorAll(".subcategory-filter");
-    const vouchers = document.querySelectorAll(".voucher-item");
-    const minPriceInput = document.getElementById("min-price");
-    const maxPriceInput = document.getElementById("max-price");
-    const priceSearchBtn = document.getElementById("price-search-btn");
-    const priceClearBtn = document.getElementById("price-clear-btn"); // Get the new clear button
-
-    function filterVouchers() {
-        const selectedSubcategories = Array.from(checkboxes)
-            .filter(c => c.checked)
-            .map(c => c.value);
-
-        const minPrice = parseFloat(minPriceInput.value) || 0;
-        const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
-
-        vouchers.forEach(voucher => {
-            const subcat = voucher.getAttribute("data-subcategory");
-            const price = parseFloat(voucher.querySelector('p:nth-of-type(2)').textContent.replace('RM ', '').replace(',', ''));
-
-            const matchesSubcategory = selectedSubcategories.length === 0 || selectedSubcategories.includes(subcat);
-            const matchesPrice = price >= minPrice && price <= maxPrice;
-
-            if (matchesSubcategory && matchesPrice) {
-                voucher.style.display = "block";
-            } else {
-                voucher.style.display = "none";
-            }
-        });
+    function clearPointsFilter() {
+        minPointsInput.value = '';
+        maxPointsInput.value = '';
+        filterVouchers();
     }
 
-    // New function to clear the price filters
-    function clearPriceFilter() {
-        minPriceInput.value = ''; // Clear min input
-        maxPriceInput.value = ''; // Clear max input
-        filterVouchers(); // Re-run the filter to show all vouchers
-    }
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener("change", filterVouchers);
+    checkboxes.forEach(cb => cb.addEventListener("change", filterVouchers));
+    pointsSearchBtn.addEventListener("click", filterVouchers);
+    pointsClearBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        clearPointsFilter();
     });
-
-    priceSearchBtn.addEventListener("click", filterVouchers);
-    priceClearBtn.addEventListener("click", function(e) {
-        e.preventDefault(); // Prevent the default link behavior
-        clearPriceFilter();
-    });
+    searchNameInput.addEventListener("input", filterVouchers);
 });
 </script>
 
