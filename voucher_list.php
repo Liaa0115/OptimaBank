@@ -110,7 +110,7 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php" style="color: #f9f9f9;">Home Page</a></li>
-        <li class="nav-item"><a class="nav-link" href="voucher.php" style="color: #f9f9f9;">Voucher</a></li>
+        <li class="nav-item"><a class="nav-link" href="voucher_list.php" style="color: #f9f9f9;">Voucher</a></li>
         <?php if (isset($_SESSION['email'])): ?>
           <li class="nav-item"><a class="nav-link" href="profile.php" style="color: #f9f9f9;">Profile</a></li>
           <li class="nav-item points-badge d-flex align-items-center" style="text-decoration: none; color: #0f6f4a; background-color: #ffc600 !important; border-color: #ffc600 !important;">

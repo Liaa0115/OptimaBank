@@ -254,7 +254,7 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--mb-black);">
   <div class="container">
     <!-- Logo + Text -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
+    <a class="navbar-brand d-flex align-items-center" href="index.php">
       <img src="images/logo.png" alt="Logo" height="36" style="border-radius:6px; background:white; padding:4px;">
       <span style="margin-left:6px;color:var(--mb-yellow); font-weight:700;">TREATS POINTS</span>
     </a>
