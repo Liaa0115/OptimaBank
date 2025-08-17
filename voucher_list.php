@@ -200,7 +200,10 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
                   <p class="mb-2"><i class="fa-solid fa-coins text-warning"></i> <?= $voucher['points_required'] ?> Points</p>
                   <div class="d-flex justify-content-between">
                     <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-warning btn-sm">Redeem Now</a>
-                    <button class="btn btn-success btn-sm">Add to Cart</button>
+                    <!-- <button class="btn btn-success btn-sm">Add to Cart</button> -->
+                    <button class="btn btn-success btn-sm" type="button" data-voucher-id="<?php echo $voucher['id']; ?>">
+                      Add to Cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -264,6 +267,42 @@ document.addEventListener("DOMContentLoaded", function() {
         clearPointsFilter();
     });
     searchNameInput.addEventListener("input", filterVouchers);
+
+    document.querySelectorAll('.btn-success').forEach(btn => {
+      btn.addEventListener('click', function() {
+          const voucherId = this.dataset.voucherId;
+          const quantity = 1; // Always add 1 item
+
+          fetch('cart_controller.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({
+                  action: 'increase',
+                  voucher_id: voucherId,
+                  quantity: quantity
+              })
+          })
+          .then(res => res.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  // Update cart count badge
+                  const cartCountElem = document.querySelector('#cart-count');
+                  if(cartCountElem) {
+                      cartCountElem.innerText = data.cart_count;
+                  }
+
+                  // Feedback to user
+                  alert('Added 1 item to cart!');
+              } else {
+                  alert(data.message || 'Something went wrong');
+              }
+          })
+          .catch(err => console.error('Error:', err));
+      });
+    });
+
+
+
 });
 </script>
 

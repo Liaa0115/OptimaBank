@@ -224,7 +224,9 @@ $conn->close();
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <button class="btn btn-redeem-now" type="button">REDEEM NOW</button>
-                <button class="btn btn-add-to-cart" type="button">ADD TO CART</button>
+                <button class="btn btn-add-to-cart" type="button" data-voucher-id="<?php echo $voucher['id']; ?>">
+                    ADD TO CART
+                </button>
             </div>
         </div>
     </div>
@@ -242,6 +244,7 @@ $conn->close();
         const plusBtn = document.getElementById('plus-btn');
         const quantityField = document.getElementById('quantity-field');
 
+        // Quantity increase/decrease
         minusBtn.addEventListener('click', function() {
             let currentValue = parseInt(quantityField.value);
             if (currentValue > 1) {
@@ -252,6 +255,36 @@ $conn->close();
         plusBtn.addEventListener('click', function() {
             let currentValue = parseInt(quantityField.value);
             quantityField.value = currentValue + 1;
+        });
+
+        // Handle Add to Cart
+        document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const voucherId = this.dataset.voucherId;
+                const quantity = parseInt(quantityField.value) || 1; // ✅ use selected quantity
+
+                fetch('cart_controller.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        action: 'increase',
+                        voucher_id: voucherId,
+                        quantity: quantity
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update cart count badge
+                        document.querySelector('#cart-count').innerText = data.cart_count;
+
+                        // Feedback to user (you can swap with toast/modal later)
+                        alert('Added ' + quantity + ' item(s) to cart!');
+                    } else {
+                        alert(data.message || 'Something went wrong');
+                    }
+                });
+            });
         });
     });
 </script>
