@@ -24,6 +24,14 @@ if (isset($_SESSION['email'])) {
     $points = $pointResult ? $pointResult['points'] : 0;
 }
 
+// Fetch voucher data
+$vouchers = [];
+$result = $conn->query("SELECT id, name, image, description FROM vouchers ORDER BY id ASC LIMIT 9");
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $vouchers[] = $row;
+    }
+}
 ?>
 
 <!doctype html>
@@ -35,226 +43,16 @@ if (isset($_SESSION['email'])) {
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <style>
-:root {
-  --mb-yellow: #ffc600; /* Maybank-like yellow */
-  --mb-black: #0f6f4a;
-  --muted: #6c757d;
-  --card-radius: 12px;
-}
-
-body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #f8f9fb;
-  color: #222;
-}
-
-/* Top bar */
-.topbar {
-  background: var(--mb-black);
-  color: white;
-  padding: 6px 0;
-  font-size: .9rem;
-}
-/* Navbar custom styling */
-.navbar {
-  background-color: var(--mb-black) !important;
-  padding: 0.75rem 0;
-}
-
-.navbar-brand img {
-  border-radius: 6px;
-  background: white;
-  padding: 4px;
-}
-
-.navbar-brand span {
-  margin-left: 6px;
-  color: var(--mb-yellow);
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-.navbar-nav .nav-link {
-  color: white !important;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  transition: color 0.2s ease;
-}
-
-.navbar-nav .nav-link:hover {
-  color: var(--mb-yellow) !important;
-}
-
-.points-badge {
-  background-color: var(--mb-yellow);
-  color: var(--mb-black) !important;
-  font-weight: 600;
-  border-radius: 20px;
-  padding: 0.3rem 0.75rem;
-  margin: 0.25rem 0;
-}
-
-.navbar-toggler {
-  border-color: var(--mb-yellow);
-}
-
-.navbar-toggler-icon {
-  filter: invert(80%) sepia(75%) saturate(300%) hue-rotate(360deg);
-}
-
-/* Header */
-.site-header {
-  background: linear-gradient(90deg, rgba(11,11,11,1) 0%, rgba(19,19,19,1) 100%);
-  color: white;
-  padding: 18px 0;
-}
-.brand-logo {
-  display:inline-flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.2rem;color:var(--mb-yellow)
-}
-
-/* Hero */
-.hero-carousel {
-  background: linear-gradient(90deg, #ffeaa7 0%, #0f6f4a 100%);
-}
-.hero-carousel .badge-feature {
-  background: var(--mb-yellow);
-  color: #111;
-  font-weight:600;
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: .85rem;
-}
-
-/* Uniform slide height */
-.hero-slide {
-  min-height: 400px; /* all slides same height */
-}
-.hero-img-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-.hero-img {
-  max-height: 350px; /* fits inside slide */
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* keeps aspect ratio */
-  border-radius: 8px;
-}
-
-/* Bottom nav buttons */
-.carousel-nav {
-  position: relative;
-  margin-top: 1rem;
-}
-.nav-btn {
-  width: 24px;
-  height: 8px;
-  background-color: rgba(0,0,0,0.3);
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-.nav-btn.active,
-.nav-btn:hover {
-  background-color: var(--mb-yellow);
-}
-
-/* Cards */
-.deal-card {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-  }
-  .deal-card:hover {
-    transform: translateY(-5px);
-  }
-.deal-card img {
-  width: 100%;                 /* responsive scaling in Bootstrap column */
-  max-width: 300px;            /* or adjust to the size you want */
-  aspect-ratio: 1 / 1;         /* force square shape (1080x1080 ratio) */
-  object-fit: cover;           /* fill square, crop overflow */
-  border-radius: 8px;
-  background-color: #fff;
-  padding: 4px;
-  margin: 0 auto;              /* center in card */
-  display: block;
-}
-
-/* Category tiles */
-.category-tile {border-radius:12px;background:white;padding:18px;text-align:center;box-shadow:0 4px 12px rgba(18,20,25,0.04)}
-
-/* Footer */
-footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
-
-@media (max-width:767px) {
-  .brand-logo {font-size:1rem}
-  .hero-slide {min-height: auto;}
-  .hero-img {max-height: 250px;}
-}
-.btn-dark {
-  background-color: #0f6f4a !important;
-  border-color: #0f6f4a !important;
-}
-.btn-dark:hover {
-  background-color: #ffc600 !important;
-  border-color: #ffc600 !important;
-}
-.category-tile {
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-.category-tile:hover {
-  background-color: #f8f9fa;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
-}
-.cart-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: white; /* sebelum hover putih */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0f6f4a; /* icon hijau */
-    margin-left: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.cart-icon i {
-    font-size: 18px;
-    color: #0f6f4a; /* kekalkan hijau */
-}
-
-.cart-icon:hover {
-    background-color: #ffc600; /* hover jadi kuning */
-}
-
-.cart-icon:hover i {
-    color: #0f6f4a; /* pastikan icon kekal hijau */
-}
-
-</style>
+  <link rel="stylesheet" href="css/indexStyle.css?v=<?= time() ?>">
 </head>
 <body>
 
-  <!-- Top announcement bar -->
-  <!-- <div class="topbar text-center">
-    <div class="container d-flex justify-content-between align-items-center">
-      <div>Enjoy exclusive deals & cashback — sign in to unlock more!</div>
-      <div class="d-none d-md-block">Need help? <a href="#" class="text-decoration-underline text-white">Support</a></div>
-    </div>
-  </div> -->
 
  <!-- Header / Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--mb-black);">
   <div class="container">
     <!-- Logo + Text -->
-    <a class="navbar-brand d-flex align-items-center" href="index.php">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
       <img src="images/logo.png" alt="Logo" height="36" style="border-radius:6px; background:white; padding:4px;">
       <span style="margin-left:6px;color:var(--mb-yellow); font-weight:700;">TREATS POINTS</span>
     </a>
@@ -302,13 +100,13 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
         <span class="badge-feature">Weekly Spotlight</span>
         <h2 class="mt-3">Up to 50% Off on Popular Dishes</h2>
         <p class="text-muted">Enjoy mouth-watering meals from top restaurants at unbeatable prices — this week only.</p>
-        <div class="mt-3">
+        <!-- <div class="mt-3">
           <a href="#" class="btn btn-dark me-2">Explore Menu</a>
           <a href="#" class="btn btn-outline-dark">See Details</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 text-center hero-img-container">
-        <img src="images/p1.jpg" class="hero-img" alt="promo">
+        <img src="images/food/pizza.png" class="hero-img" alt="promo">
       </div>
     </div>
   </div>
@@ -322,13 +120,13 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
         <span class="badge-feature">New</span>
         <h2 class="mt-3">Exclusive Dining Rewards</h2>
         <p class="text-muted">Earn cashback while enjoying your favorite meals at selected outlets.</p>
-        <div class="mt-3">
+        <!-- <div class="mt-3">
           <a href="#" class="btn btn-dark me-2">Dine & Earn</a>
           <a href="#" class="btn btn-outline-dark">Learn More</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 text-center hero-img-container">
-        <img src="images/p2.jpg" class="hero-img" alt="promo2">
+        <img src="images/food/satay.jpg" class="hero-img" alt="promo2">
       </div>
     </div>
   </div>
@@ -342,13 +140,13 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
         <span class="badge-feature">Limited Time</span>
         <h2 class="mt-3">Special Offers on Global Cuisine</h2>
         <p class="text-muted">Taste the best from around the world — from Italian pasta to Japanese sushi.</p>
-        <div class="mt-3">
+        <!-- <div class="mt-3">
           <a href="#" class="btn btn-dark me-2">Book a Table</a>
           <a href="#" class="btn btn-outline-dark">View Deals</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 text-center hero-img-container">
-        <img src="images/p3.jpg" class="hero-img" alt="promo3">
+        <img src="images/food/mapo_tofu.jpg" class="hero-img" alt="promo3">
       </div>
     </div>
   </div>
@@ -362,13 +160,13 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
         <span class="badge-feature">Hot Deal</span>
         <h2 class="mt-3">Up to 60% Off on Desserts</h2>
         <p class="text-muted">Indulge in creamy cakes, rich chocolates, and sweet treats at irresistible prices.</p>
-        <div class="mt-3">
+        <!-- <div class="mt-3">
           <a href="#" class="btn btn-dark me-2">Order Now</a>
           <a href="#" class="btn btn-outline-dark">More Sweets</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 text-center hero-img-container">
-        <img src="images/p5.jpg" class="hero-img" alt="Dessert Deals">
+        <img src="images/food/chocolate_cake.jpg" class="hero-img" alt="Dessert Deals">
       </div>
     </div>
   </div>
@@ -382,13 +180,13 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
         <span class="badge-feature">Best Seller</span>
         <h2 class="mt-3">Signature Dishes You Can’t Miss</h2>
         <p class="text-muted">From juicy burgers to aromatic curries — savor our most-loved dishes today.</p>
-        <div class="mt-3">
+        <!-- <div class="mt-3">
           <a href="#" class="btn btn-dark me-2">Order Now</a>
           <a href="#" class="btn btn-outline-dark">See Menu</a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-6 text-center hero-img-container">
-        <img src="images/p4.jpg" class="hero-img" alt="Best Seller Dishes">
+        <img src="images/food/nasi_lemak.jpg" class="hero-img" alt="Best Seller Dishes">
       </div>
     </div>
   </div>
@@ -410,29 +208,39 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
 
 <!-- Categories -->
 <div class="row mt-4 g-3">
-  <div class="col-6 col-md-4">
+  <div class="col-6 col-md-3">
     <a href="voucher_list.php?subcategory=Western Food" class="btn btn-light w-100 category-tile p-3 text-center">
-    <i class="fa fa-hamburger fa-2x mb-2"></i>
-    <div class="fw-bold">Western Food</div>
-    <small class="text-muted">Savor rich flavors inspired by the best of Western cuisine</small>
-  </a>
+      <i class="fa fa-hamburger fa-2x mb-2"></i>
+      <div class="fw-bold">Western Food</div>
+      <small class="text-muted">Savor rich flavors inspired by the best of Western cuisine</small>
+    </a>
+  </div>
 
-  </div>
-  <div class="col-6 col-md-4">
+  <div class="col-6 col-md-3">
     <a href="voucher_list.php?subcategory=Malay Food" class="btn btn-light w-100 category-tile p-3 text-center">
-    <i class="fa fa-drumstick-bite fa-2x mb-2"></i>
-    <div class="fw-bold">Malay Food</div>
-    <small class="text-muted">Experience the authentic taste of Malaysia’s heritage</small>
-  </a>
+      <i class="fa fa-drumstick-bite fa-2x mb-2"></i>
+      <div class="fw-bold">Malay Food</div>
+      <small class="text-muted">Experience the authentic taste of Malaysia’s heritage</small>
+    </a>
   </div>
-  <div class="col-6 col-md-4">
+
+  <div class="col-6 col-md-3">
     <a href="voucher_list.php?subcategory=Chinese Food" class="btn btn-light w-100 category-tile p-3 text-center">
-    <i class="fa fa-bowl-rice fa-2x mb-2"></i>
-    <div class="fw-bold">Chinese Food</div>
-    <small class="text-muted">Enjoy timeless Chinese recipes bursting with tradition</small>
-  </a>
+      <i class="fa fa-bowl-rice fa-2x mb-2"></i>
+      <div class="fw-bold">Chinese Food</div>
+      <small class="text-muted">Enjoy timeless Chinese recipes bursting with tradition</small>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3">
+    <a href="voucher_list.php?subcategory=Indian Food" class="btn btn-light w-100 category-tile p-3 text-center">
+      <i class="fa fa-pepper-hot fa-2x mb-2"></i>
+      <div class="fw-bold">Indian Food</div>
+      <small class="text-muted">Delight in the vibrant spices and flavors of India</small>
+    </a>
   </div>
 </div>
+
 
 
 
@@ -461,236 +269,64 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
 </style>
 
   
-  <div class="row justify-content-center g-4">
+<div class="row justify-content-center g-4">
+  <?php if (!empty($vouchers)): ?>
+    <?php foreach ($vouchers as $voucher): ?>
+      <div class="col-md-4 col-sm-6">
+        <div class="p-3 bg-white deal-card text-center">
+          <img src="<?= htmlspecialchars($voucher['image']) ?>" 
+               class="rounded mb-3 img-fluid mx-auto d-block" 
+               style="max-width: 400px;" 
+               alt="<?= htmlspecialchars($voucher['name']) ?>">
 
-    <!-- Deal 1 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v9.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Chinese Cuisine</div>
-        <div class="text-muted small">Up to 30% off on selected items</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
+          <div class="fw-bold"><?= htmlspecialchars($voucher['name']) ?></div>
+          <div class="text-muted small">
+            <?= htmlspecialchars($voucher['description']) ?>
+          </div>
+
+          <!-- Butang align tengah -->
+          <div class="mt-3 d-flex justify-content-center align-items-center gap-2">
+            <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-sm btn-dark">
+              <i class="fa fa-gift me-1"></i> Redeem
+            </a>
+            <button 
+              class="btn btn-add-to-cart btn-dark rounded-circle d-flex align-items-center justify-content-center" 
+              type="button" 
+              data-voucher-id="<?= $voucher['id']; ?>" 
+              title="Add to Cart" 
+              style="width:40px; height:40px;">
+              <i class="fa fa-shopping-cart fa-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <p class="text-center">No vouchers available right now.</p>
+  <?php endif; ?>
+</div>
+
+
+</div>
+
+       
       </div>
 
+    </div>
+    <!-- Success Modal -->
+<div class="modal fade" id="cartSuccessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4 text-center">
+      <div class="modal-body">
+        <i class="fa fa-check-circle text-success fa-3x mb-3"></i>
+        <h5 class="mb-2">Added to Cart!</h5>
+        <p class="text-muted">Your item has been successfully added to the cart.</p>
+        <button type="button" class="btn btn-dark mt-3" data-bs-dismiss="modal">OK</button>
       </div>
     </div>
-
-    <!-- Deal 2 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v2.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Malay Cuisine</div>
-        <div class="text-muted small">RM10 off with min spend RM40</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-    <!-- Deal 3 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v3.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Western Cuisine</div>
-        <div class="text-muted small">Save up to RM20</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-     <!-- Deal 4 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v10.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Chinese Cuisine</div>
-        <div class="text-muted small">Limited time offer Gong Xi Savings Bundle</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-     <!-- Deal 5 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/mb.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Malay Cuisine</div>
-        <div class="text-muted small">Limited 30 sets only + FREE Fish Meehoon Soup</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-    <!-- Deal 6 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v11.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Chinese Cuisine</div>
-        <div class="text-muted small">Up to RM14 Off</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-    <!-- Deal 7 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v5.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Western Cuisine</div>
-        <div class="text-muted small">Tex Deals Tasty Singles for only RM 7.50 each</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-     <!-- Deal 8 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v7.jpg" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Malay Cuisine</div>
-        <div class="text-muted small">Discount 50% for 2nd items</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
-    <!-- Deal 9 -->
-    <div class="col-md-4 col-sm-6">
-      <div class="p-3 bg-white deal-card text-center">
-        <img src="images/v12.png" class="rounded mb-3 img-fluid" style="max-width: 400px;" alt="deal">
-        <div class="fw-bold">Western Cuisine</div>
-        <div class="text-muted small">50% OFF on Regular size Pizza via Apps</div>
-        <div class="mt-3">
-        <a href="#" class="btn btn-sm btn-dark">
-          <i class="fa fa-gift me-1"></i> Redeem
-        </a>
-        <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-          <i class="fa fa-shopping-cart"></i>
-        </a>
-      </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
-        <!-- Right column (sidebar) -->
-        <!-- <div class="col-lg-4">
-          <div class="position-sticky" style="top:90px">
-            <div class="bg-white p-3 rounded deal-card">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <div class="small text-muted">Your balance</div>
-                  <div class="fw-bold">RM 120.00</div>
-                </div>
-                <div>
-                  <a href="#" class="btn btn-outline-secondary btn-sm">Top up</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="bg-white p-3 rounded mt-3 deal-card">
-              <div class="fw-bold">Popular nearby</div>
-              <div class="mt-2 small text-muted">Shops near you getting great reviews</div>
-
-              <ul class="list-unstyled mt-3">
-                <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                  <div>
-                    <div class="fw-semibold">Coffee Spot</div>
-                    <small class="text-muted">0.4km away</small>
-                  </div>
-                  <a href="#" class="btn btn-sm btn-outline-dark">View</a>
-                </li>
-
-                <li class="d-flex justify-content-between align-items-center py-2">
-                  <div>
-                    <div class="fw-semibold">Noodle House</div>
-                    <small class="text-muted">0.6km away</small>
-                  </div>
-                  <a href="#" class="btn btn-sm btn-outline-dark">View</a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="bg-white p-3 rounded mt-3 text-center deal-card">
-              <div class="fw-bold">Get extra perks</div>
-              <p class="small text-muted">Link your card for faster redemptions and exclusive offers.</p>
-              <a href="#" class="btn btn-dark">Link card</a>
-            </div>
-          </div>
-        </div> -->
-
-      </div>
-
-      <!-- More sections -->
-      <!-- <div class="row mt-5">
-        <div class="col-12">
-          <center><h5>All Categories</h5></center>
-          <div class="mt-3 row g-3">
-          
-            <div class="col-6 col-md-3">
-              <div class="category-tile">Groceries</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="category-tile">Travel</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="category-tile">Health</div>
-            </div>
-            <div class="col-6 col-md-3">
-              <div class="category-tile">Beauty</div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-    </div>
   </main>
 
   <footer>
@@ -743,5 +379,59 @@ footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
     });
   });
 </script>
+<script>
+document.getElementById('dealSearch').addEventListener('keyup', function() {
+  let query = this.value.toLowerCase();
+  let cards = document.querySelectorAll('.deal-card');
+
+  cards.forEach(card => {
+    let text = card.innerText.toLowerCase();
+    if (text.includes(query)) {
+      card.parentElement.style.display = ""; // show col
+    } else {
+      card.parentElement.style.display = "none"; // hide col
+    }
+  });
+});
+</script>
+  <script>
+    // Handle Add to Cart
+    document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const voucherId = this.dataset.voucherId;
+        const quantity = 1; // default quantity
+
+        fetch('cart_controller.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+        action: 'increase',
+        voucher_id: voucherId,
+        quantity: quantity
+    })
+})
+.then(res => {
+    if (!res.ok) {
+        throw new Error("HTTP status " + res.status);
+    }
+    return res.json();
+})
+.then(data => {
+    console.log("Response:", data);
+    if (data.status === 'success') {
+        const successModal = new bootstrap.Modal(document.getElementById('cartSuccessModal'));
+        successModal.show();
+    } else {
+        alert(data.message || 'Something went wrong');
+    }
+})
+.catch(err => {
+    console.error("Fetch error:", err);
+    alert('Request failed: ' + err.message);
+});
+    });
+});
+
+  </script>
 </body>
 </html>

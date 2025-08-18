@@ -52,51 +52,78 @@ $conn->close();
     <?php if (empty($cartItems)): ?>
         <div class="alert alert-info">Your cart is empty!</div>
     <?php else: ?>
-        <form id="cart-form">
-            <table class="table table-bordered cart-table align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th><input type="checkbox" id="select-all"></th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Points</th>
-                        <th>Quantity</th>
-                        <th>Total Points</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($cartItems as $item): ?>
-                    <tr data-cart-id="<?= $item['cart_id'] ?>" data-voucher-id="<?= $item['voucher_id'] ?>">
-                        <td><input type="checkbox" name="selected[]" value="<?= $item['voucher_id'] ?>"></td>
-                        <td><img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"></td>
-                        <td><?= htmlspecialchars($item['name']) ?></td>
-                        <td><?= number_format($item['points_required']) ?></td>
-                        <td>
-                            <div class="quantity-input">
-                                <span class="quantity-btn btn-decrease">-</span>
-                                <input type="text" class="form-control" value="<?= $item['cart_qty']?>" readonly>
-                                <span class="quantity-btn btn-increase">+</span>
-                            </div>
-                        </td>
-                        <td class="total-points"><?= $item['cart_qty'] * $item['points_required'] ?></td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-danger btn-delete">Delete</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+      <form action="checkout.php" method="POST" id="cart-form">
+    <table class="table table-bordered cart-table align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th><input type="checkbox" id="select-all"></th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Points</th>
+                <th>Quantity</th>
+                <th>Total Points</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($cartItems as $item): ?>
+            <tr data-cart-id="<?= $item['cart_id'] ?>" data-voucher-id="<?= $item['voucher_id'] ?>">
+                <td>
+                    <input type="checkbox" name="selected[]" value="<?= $item['cart_id'] ?>">
+                </td>
+                <td><img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" width="70"></td>
+                <td><?= htmlspecialchars($item['name']) ?></td>
+                <td><?= number_format($item['points_required']) ?></td>
+                <td>
+                    <input type="hidden" name="quantity[<?= $item['cart_id'] ?>]" value="<?= $item['cart_qty'] ?>">
+                    <?= $item['cart_qty'] ?>
+                </td>
+                <td class="total-points"><?= $item['cart_qty'] * $item['points_required'] ?></td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger btn-delete">Delete</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 
-            <div class="text-end mt-3">
-                <div id="total-points-used" class="mb-2 fw-bold">Total Points: 0</div>
-                <button type="button" id="checkout-btn" class="btn btn-success btn-lg">Checkout</button>
-            </div>
-        </form>
+    <!-- Alert box (hidden by default) -->
+    <div id="alert-box" class="alert alert-danger d-none">
+        ⚠️ Please select at least one item before proceeding to checkout.
+    </div>
+
+    <div class="checkout-box d-flex justify-content-end align-items-center mt-4">
+    <button type="submit" class="btn btn-success btn-lg">
+        <i class="fa fa-credit-card"></i> Proceed to Checkout
+    </button>
+</div>
+</form>
+
+
     <?php endif; ?>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById("cart-form").addEventListener("submit", function(event) {
+    let checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
+    let alertBox = document.getElementById("alert-box");
+
+    if (checkboxes.length === 0) {
+        event.preventDefault(); // Stop form submission
+        alertBox.classList.remove("d-none"); // Show alert
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top for visibility
+    } else {
+        alertBox.classList.add("d-none"); // Hide alert if already shown
+    }
+});
+
+// Select all checkbox
+document.getElementById("select-all").addEventListener("change", function() {
+    let checkboxes = document.querySelectorAll('input[name="selected[]"]');
+    checkboxes.forEach(cb => cb.checked = this.checked);
+});
+</script>
 
 </body>
 </html>

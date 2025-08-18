@@ -2,38 +2,69 @@
 session_start();
 include 'conn.php';
 
-$points = 0;
-
-if (isset($_SESSION['email'])) {
-    $email = $_SESSION['email'];
-
-    $stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
-
-    $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
-    $pointStmt->bind_param("s", $email);
-    $pointStmt->execute();
-    $pointResult = $pointStmt->get_result()->fetch_assoc();
-    $points = $pointResult ? $pointResult['points'] : 0;
+// Pastikan user dah login
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
 }
 
-// Fetch vouchers
+$email = $_SESSION['email'];
+
+// Subcategory filter dari URL (optional)
+$subcategoryFilter = $_GET['subcategory'] ?? null;
+
+// =========================
+// Ambil maklumat user
+// =========================
+$stmt = $conn->prepare("
+    SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image 
+    FROM users 
+    WHERE email = ?
+");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+// =========================
+// Ambil points user
+// =========================
+$points = 0;
+$pointStmt = $conn->prepare("SELECT points FROM points WHERE email = ?");
+$pointStmt->bind_param("s", $email);
+$pointStmt->execute();
+$pointResult = $pointStmt->get_result()->fetch_assoc();
+if ($pointResult) {
+    $points = (int)$pointResult['points'];
+}
+$pointStmt->close();
+
+// =========================
+// Ambil semua vouchers (JANGAN filter di SQL, biar JS yang filter)
+// =========================
 $vouchers = [];
-$result = $conn->query("SELECT id, name, image, category, subcategory, price, points_required FROM vouchers ORDER BY id ASC");
+$result = $conn->query("
+    SELECT id, name, image, category, subcategory, price, points_required 
+    FROM vouchers 
+    ORDER BY id ASC
+");
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $vouchers[] = $row;
     }
 }
 
-// Fetch distinct subcategories
+
+// =========================
+// Ambil senarai subcategory unik (untuk filter)
+// =========================
 $subcategories = [];
 $subcatResult = $conn->query("SELECT DISTINCT subcategory FROM vouchers ORDER BY subcategory ASC");
 if ($subcatResult && $subcatResult->num_rows > 0) {
     while ($row = $subcatResult->fetch_assoc()) {
-        $subcategories[] = $row['subcategory'];
+        if (!empty($row['subcategory'])) {
+            $subcategories[] = $row['subcategory'];
+        }
     }
 }
 ?>
@@ -323,10 +354,21 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
 
+// Auto check subcategory dari URL kalau ada
+const subcategoryFromUrl = "<?= $subcategoryFilter ?>";
+if (subcategoryFromUrl) {
+    checkboxes.forEach(cb => {
+        if (cb.value === subcategoryFromUrl) {
+            cb.checked = true;
+        }
+    });
+    filterVouchers(); // terus filter ikut subcategory yang dipilih
+}
 
 
 });
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

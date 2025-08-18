@@ -1,0 +1,201 @@
+:root {
+    --mb-yellow: #ffc600; /* Maybank-like yellow */
+    --mb-black: #0f6f4a;
+    --muted: #6c757d;
+    --card-radius: 12px;
+  }
+  
+  body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: #f8f9fb;
+    color: #222;
+  }
+  
+  /* Top bar */
+  .topbar {
+    background: var(--mb-black);
+    color: white;
+    padding: 6px 0;
+    font-size: .9rem;
+  }
+  /* Navbar custom styling */
+  .navbar {
+    background-color: var(--mb-black) !important;
+    padding: 0.75rem 0;
+  }
+  
+  .navbar-brand img {
+    border-radius: 6px;
+    background: white;
+    padding: 4px;
+  }
+  
+  .navbar-brand span {
+    margin-left: 6px;
+    color: var(--mb-yellow);
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  
+  .navbar-nav .nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: var(--mb-yellow) !important;
+  }
+  
+  .points-badge {
+    background-color: var(--mb-yellow);
+    color: var(--mb-black) !important;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 0.3rem 0.75rem;
+    margin: 0.25rem 0;
+  }
+  
+  .navbar-toggler {
+    border-color: var(--mb-yellow);
+  }
+  
+  .navbar-toggler-icon {
+    filter: invert(80%) sepia(75%) saturate(300%) hue-rotate(360deg);
+  }
+  
+  /* Header */
+  .site-header {
+    background: linear-gradient(90deg, rgba(11,11,11,1) 0%, rgba(19,19,19,1) 100%);
+    color: white;
+    padding: 18px 0;
+  }
+  .brand-logo {
+    display:inline-flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.2rem;color:var(--mb-yellow)
+  }
+  
+  /* Hero */
+  .hero-carousel {
+    background: linear-gradient(90deg, #ffeaa7 0%, #0f6f4a 100%);
+  }
+  .hero-carousel .badge-feature {
+    background: var(--mb-yellow);
+    color: #111;
+    font-weight:600;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: .85rem;
+  }
+  
+  /* Uniform slide height */
+  .hero-slide {
+    min-height: 400px; /* all slides same height */
+  }
+  .hero-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .hero-img {
+    max-height: 350px; /* fits inside slide */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* keeps aspect ratio */
+    border-radius: 8px;
+  }
+  
+  /* Bottom nav buttons */
+  .carousel-nav {
+    position: relative;
+    margin-top: 1rem;
+  }
+  .nav-btn {
+    width: 24px;
+    height: 8px;
+    background-color: rgba(0,0,0,0.3);
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  .nav-btn.active,
+  .nav-btn:hover {
+    background-color: var(--mb-yellow);
+  }
+  
+  /* Cards */
+  .deal-card {
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+    .deal-card:hover {
+      transform: translateY(-5px);
+    }
+  .deal-card img {
+    width: 100%;                 /* responsive scaling in Bootstrap column */
+    max-width: 300px;            /* or adjust to the size you want */
+    aspect-ratio: 1 / 1;         /* force square shape (1080x1080 ratio) */
+    object-fit: cover;           /* fill square, crop overflow */
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 4px;
+    margin: 0 auto;              /* center in card */
+    display: block;
+  }
+  
+  /* Category tiles */
+  .category-tile {border-radius:12px;background:white;padding:18px;text-align:center;box-shadow:0 4px 12px rgba(18,20,25,0.04)}
+  
+  /* Footer */
+  footer {padding:30px 0;background:#0f1720;color:#cbd5e1}
+  
+  @media (max-width:767px) {
+    .brand-logo {font-size:1rem}
+    .hero-slide {min-height: auto;}
+    .hero-img {max-height: 250px;}
+  }
+  .btn-dark {
+    background-color: #0f6f4a !important;
+    border-color: #0f6f4a !important;
+  }
+  .btn-dark:hover {
+    background-color: #ffc600 !important;
+    border-color: #ffc600 !important;
+  }
+  .category-tile {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  .category-tile:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .cart-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: white; /* sebelum hover putih */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f6f4a; /* icon hijau */
+      margin-left: 10px;
+      transition: background-color 0.3s ease;
+  }
+  
+  .cart-icon i {
+      font-size: 18px;
+      color: #0f6f4a; /* kekalkan hijau */
+  }
+  
+  .cart-icon:hover {
+      background-color: #ffc600; /* hover jadi kuning */
+  }
+  
+  .cart-icon:hover i {
+      color: #0f6f4a; /* pastikan icon kekal hijau */
+  }
+  
