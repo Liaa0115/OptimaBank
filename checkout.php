@@ -10,23 +10,33 @@ if (!isset($_SESSION['email'])) {
 
 $email = $_SESSION['email'];
 
-// Ambil cart user
-$sql = "SELECT c.id, c.voucher_id, v.name, v.image, v.description, v.points_required, c.quantity 
-        FROM cart c 
-        JOIN vouchers v ON c.voucher_id = v.id 
-        WHERE c.email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-
-$total_points = 0;
+// Ambil cart user  
 $cart_items = [];
-while ($row = $result->fetch_assoc()) {
-    $subtotal = $row['points_required'] * $row['quantity'];
-    $total_points += $subtotal;
-    $cart_items[] = $row;
+$total_points = 0;
+
+$selected = $_POST['selected'] ?? []; // sentiasa ada array walaupun kosong
+
+if (!empty($selected)) {
+    $placeholders = implode(',', array_fill(0, count($selected), '?')); // ?,?,?
+    $types = str_repeat('i', count($selected)); // all integers
+
+    $sql = "SELECT c.id, c.voucher_id, v.name, v.image, v.description, v.points_required, c.quantity 
+            FROM cart c 
+            JOIN vouchers v ON c.voucher_id = v.id 
+            WHERE c.email = ? AND c.id IN ($placeholders)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s" . $types, $email, ...$selected);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $subtotal = $row['points_required'] * $row['quantity'];
+        $total_points += $subtotal;
+        $cart_items[] = $row;
+    }
 }
+
 
 // Dapatkan baki points user
 $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
@@ -89,8 +99,11 @@ if (isset($_POST['confirm_checkout'])) {
           }
 
           // 6) Kosongkan cart
-          $deleteCart = $conn->prepare("DELETE FROM cart WHERE email = ?");
-          $deleteCart->bind_param("s", $email);
+          $placeholders = implode(',', array_fill(0, count($selected), '?'));
+$types = str_repeat('i', count($selected));
+$deleteCart = $conn->prepare("DELETE FROM cart WHERE email = ? AND id IN ($placeholders)");
+$deleteCart->bind_param("s" . $types, $email, ...$selected);
+
           if (!$deleteCart->execute()) throw new Exception($deleteCart->error);
 
           $conn->commit();
@@ -186,10 +199,14 @@ if (isset($_POST['confirm_checkout'])) {
   <div class="checkout-footer">
     <div class="total">Total: <?= $total_points; ?> pts</div>
     <form method="POST">
-      <button type="submit" name="confirm_checkout" class="btn btn-success btn-lg">
-        <i class="fa fa-check-circle"></i> Confirm Checkout
-      </button>
-    </form>
+  <?php foreach ($selected as $sid): ?>
+      <input type="hidden" name="selected[]" value="<?= $sid ?>">
+  <?php endforeach; ?>
+  <button type="submit" name="confirm_checkout" class="btn btn-success btn-lg">
+    <i class="fa fa-check-circle"></i> Confirm Checkout
+  </button>
+</form>
+
   </div>
   <?php } ?>
 
