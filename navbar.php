@@ -1,13 +1,13 @@
 <?php
-session_start();
+//session_start();
 include 'conn.php';
 
 $points = 0;
-$voucher = null;
 
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
 
+    // Fetch user points
     $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
     $pointStmt->bind_param("s", $email);
     $pointStmt->execute();
@@ -15,30 +15,34 @@ if (isset($_SESSION['email'])) {
     $points = $pointResult ? $pointResult['points'] : 0;
 }
 
-if (isset($_GET['id'])) {
-    $voucher_id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT id, name, image, price, points_required, description, quantity FROM vouchers WHERE id = ?");
-    $stmt->bind_param("i", $voucher_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $voucher = $result->fetch_assoc();
-    }
-    $stmt->close();
+// Fetch cart items for this user
+$cartItems = [];
+$cartStmt = $conn->prepare("
+    SELECT c.id AS cart_id, c.quantity AS cart_qty, v.id AS voucher_id, v.name, v.image, v.price, v.points_required
+    FROM cart c
+    JOIN vouchers v ON c.voucher_id = v.id
+    WHERE c.email = ?
+");
+$cartStmt->bind_param("s", $email);
+$cartStmt->execute();
+$cartResult = $cartStmt->get_result();
+while ($row = $cartResult->fetch_assoc()) {
+    $cartItems[] = $row;
 }
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redeem Item</title>
+<title>Your Cart</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
-    body { background-color: #f9f9f9; }
+body { background-color: #f9f9f9; }
     
     .redeem-card-container {
         width: 900px;
@@ -144,10 +148,14 @@ $conn->close();
         line-height: 1.5;
         color: #555;
     }
+
+
+.cart-table img { width: 80px; border-radius: 8px; }
+.quantity-btn { cursor: pointer; padding: 4px 10px; border: 1px solid #ddd; border-radius: 4px; background-color: #f0f0f0; }
+.quantity-btn:hover { background-color: #e0e0e0; }
 </style>
 </head>
 <body>
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0f6f4a;">
   <div class="container">
@@ -183,110 +191,4 @@ $conn->close();
   </div>
 </nav>
 
-<div class="container redeem-card-container">
-    <?php if ($voucher): ?>
-    <div class="row redeem-card-content">
-        <div class="col-md-6 product-image-section">
-            <img src="<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
-        </div>
-
-        <div class="col-md-6 product-details-section">
-            <h2 class="fw-bold"><?= htmlspecialchars($voucher['name']) ?></h2>
-            <p class="text-muted mt-2"><?= nl2br(htmlspecialchars($voucher['description'])) ?></p>
-
-            <div class="my-4">
-                <div class="row mb-2">
-                    <div class="col-3 fw-bold">Price</div>
-                    <div class="col-auto price-text">RM <?= number_format($voucher['price'], 2) ?></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-3 fw-bold">Points</div>
-                    <div class="col-auto points-text"><?= number_format($voucher['points_required']) ?></div>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center mb-4">
-                <span class="me-3 fw-bold">Quantity</span>
-                <div class="quantity-input">
-                    <button class="quantity-btn" id="minus-btn">-</button>
-                    <input type="text" class="form-control" value="1" readonly id="quantity-field">
-                    <button class="quantity-btn" id="plus-btn">+</button>
-                </div>
-                <small class="text-muted" style="margin-left: 10px;">Only <?= $voucher['quantity'] ?? 'a few' ?> available</small>
-            </div>
-
-            <div class="form-check mb-4">
-                <input class="form-check-input" type="checkbox" value="" id="termsCheck">
-                <label class="form-check-label text-muted" for="termsCheck">
-                    I agree to the Terms and Conditions
-                </label>
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button class="btn btn-redeem-now" type="button">REDEEM NOW</button>
-                <button class="btn btn-add-to-cart" type="button" data-voucher-id="<?php echo $voucher['id']; ?>">
-                    ADD TO CART
-                </button>
-            </div>
-        </div>
-    </div>
-    <?php else: ?>
-        <div class="text-center py-5">
-            <p class="lead">Item not found. Please go back to the voucher list.</p>
-        </div>
-    <?php endif; ?>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const minusBtn = document.getElementById('minus-btn');
-        const plusBtn = document.getElementById('plus-btn');
-        const quantityField = document.getElementById('quantity-field');
-
-        // Quantity increase/decrease
-        minusBtn.addEventListener('click', function() {
-            let currentValue = parseInt(quantityField.value);
-            if (currentValue > 1) {
-                quantityField.value = currentValue - 1;
-            }
-        });
-
-        plusBtn.addEventListener('click', function() {
-            let currentValue = parseInt(quantityField.value);
-            quantityField.value = currentValue + 1;
-        });
-
-        // Handle Add to Cart
-        document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const voucherId = this.dataset.voucherId;
-                const quantity = parseInt(quantityField.value) || 1; // ✅ use selected quantity
-
-                fetch('cart_controller.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'increase',
-                        voucher_id: voucherId,
-                        quantity: quantity
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Update cart count badge
-                        document.querySelector('#cart-count').innerText = data.cart_count;
-
-                        // Feedback to user (you can swap with toast/modal later)
-                        alert('Added ' + quantity + ' item(s) to cart!');
-                    } else {
-                        alert(data.message || 'Something went wrong');
-                    }
-                });
-            });
-        });
-    });
-</script>
-</body>
 </html>
