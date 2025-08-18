@@ -237,6 +237,25 @@ $conn->close();
     <?php endif; ?>
 </div>
 
+<div class="modal fade" id="cartSuccessModal" tabindex="-1" aria-labelledby="cartSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4" style="border-radius: 1rem;">
+      <div class="modal-body">
+        <div class="mb-3">
+          <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #0f6f4a;"></i>
+        </div>
+        <h5 class="fw-bold mb-3">Successfully Added to Cart</h5>
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn btn-success" id="goToCartBtn">
+            <i class="fa-solid fa-cart-shopping me-2"></i> Go To Cart
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -261,7 +280,7 @@ $conn->close();
         document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
             btn.addEventListener('click', function() {
                 const voucherId = this.dataset.voucherId;
-                const quantity = parseInt(quantityField.value) || 1; // ✅ use selected quantity
+                const quantity = parseInt(quantityField.value) || 1;
 
                 fetch('cart_controller.php', {
                     method: 'POST',
@@ -275,16 +294,23 @@ $conn->close();
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // Update cart count badge
-                        document.querySelector('#cart-count').innerText = data.cart_count;
-
-                        // Feedback to user (you can swap with toast/modal later)
-                        alert('Added ' + quantity + ' item(s) to cart!');
+                        // Show success modal
+                        const successModal = new bootstrap.Modal(document.getElementById('cartSuccessModal'));
+                        successModal.show();
                     } else {
                         alert(data.message || 'Something went wrong');
                     }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Request failed.');
                 });
             });
+        });
+
+        // Redirect to cart.php when "Go To Cart" clicked
+        document.getElementById('goToCartBtn').addEventListener('click', function() {
+            window.location.href = 'cart.php';
         });
     });
 </script>

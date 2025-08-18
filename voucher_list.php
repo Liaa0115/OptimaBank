@@ -217,6 +217,27 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
   </div>
 </div>
 
+<!-- Add to Cart Success Modal -->
+<div class="modal fade" id="cartSuccessModal" tabindex="-1" aria-labelledby="cartSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="cartSuccessModalLabel">
+          <i class="fa-solid fa-circle-check"></i> Item Added
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Your voucher has been successfully added to the cart!
+      </div>
+      <div class="modal-footer">
+        <a href="cart.php" class="btn btn-success">Go to Cart</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Script for filtering -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -292,7 +313,8 @@ document.addEventListener("DOMContentLoaded", function() {
                   }
 
                   // Feedback to user
-                  alert('Added 1 item to cart!');
+                  const successModal = new bootstrap.Modal(document.getElementById('cartSuccessModal'));
+                    successModal.show();
               } else {
                   alert(data.message || 'Something went wrong');
               }
