@@ -198,4 +198,14 @@
   .cart-icon:hover i {
       color: #0f6f4a; /* pastikan icon kekal hijau */
   }
+  .btn-add-to-cart {
+    background-color: #ffc107 !important; /* kuning */
+    border: none !important;
+    color: #fff !important; /* icon putih */
+  }
+  
+  .btn-add-to-cart:hover {
+    background-color: #ffc107 !important; /* still kuning */
+    color: #0f6f4a !important; /* icon hijau */
+  }
   
