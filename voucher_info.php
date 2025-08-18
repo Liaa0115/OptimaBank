@@ -218,12 +218,13 @@ $conn->close();
             <div class="form-check mb-4">
                 <input class="form-check-input" type="checkbox" value="" id="termsCheck">
                 <label class="form-check-label text-muted" for="termsCheck">
-                    I agree to the Terms and Conditions
+                    I agree to the 
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
                 </label>
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <button class="btn btn-redeem-now" type="button">REDEEM NOW</button>
+                <button class="btn btn-redeem-now" type="button" id="redeemBtn">REDEEM NOW</button>
                 <button class="btn btn-add-to-cart" type="button" data-voucher-id="<?php echo $voucher['id']; ?>">
                     ADD TO CART
                 </button>
@@ -251,6 +252,60 @@ $conn->close();
           </button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Redeem Success Modal -->
+<div class="modal fade" id="redeemSuccessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4" style="border-radius: 1rem;">
+      <div class="modal-body">
+        <div class="mb-3"><i class="fa-solid fa-gift" style="font-size: 3rem; color: #0f6f4a;"></i></div>
+        <h5 class="fw-bold mb-2">Redemption Successful!</h5>
+        <p class="text-muted" id="redeemMessage"></p>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+          <a id="downloadPdfBtn" class="btn btn-success" href="#" target="_blank">
+            <i class="fa-solid fa-file-pdf me-2"></i> Download Voucher PDF
+          </a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Redeem Fail Modal -->
+<div class="modal fade" id="redeemFailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4" style="border-radius: 1rem;">
+      <div class="modal-body">
+        <div class="mb-3"><i class="fa-solid fa-triangle-exclamation" style="font-size: 3rem;"></i></div>
+        <h5 class="fw-bold mb-2">Redemption Failed</h5>
+        <p class="text-muted" id="redeemFailMsg"></p>
+        <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Terms & Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>1. Voucher is valid for 14 days from redemption date.</p>
+        <p>2. Voucher is non-refundable and cannot be exchanged for cash.</p>
+        <p>3. Only valid for the registered user’s account.</p>
+        <p>4. Other terms and conditions may apply.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: white; background-color: #0f6f4a !important; border-color: #0f6f4a !important;">Close</button>
       </div>
     </div>
   </div>
@@ -311,6 +366,65 @@ $conn->close();
         // Redirect to cart.php when "Go To Cart" clicked
         document.getElementById('goToCartBtn').addEventListener('click', function() {
             window.location.href = 'cart.php';
+        });
+
+        // Redeem Now
+        document.getElementById('redeemBtn')?.addEventListener('click', function() {
+            if (!termsCheck.checked) {
+                const fm = new bootstrap.Modal(document.getElementById('redeemFailModal'));
+                document.getElementById('redeemFailMsg').innerText = 'Please agree to the Terms and Conditions.';
+                fm.show();
+                return;
+            }
+
+            const quantity = parseInt(quantityField.value, 10) || 1;
+            const voucherId = <?= $voucher ? (int)$voucher['id'] : 0 ?>;
+
+            fetch('redeem_process.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    voucher_id: voucherId,
+                    quantity: quantity,
+                    agreed: 1
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update points balance in navbar if present
+                    const pb = document.getElementById('points-balance');
+                    if (pb && typeof data.new_balance !== 'undefined') {
+                        pb.textContent = data.new_balance;
+                    }
+
+                    const sm = new bootstrap.Modal(document.getElementById('redeemSuccessModal'));
+                    const msg = `You redeemed ${data.quantity} × ${data.voucher_name}. 
+                                Total points spent: ${data.points_spent}. 
+                                Expires on: ${data.expiry_date}.`;
+                    document.getElementById('redeemMessage').innerText = msg;
+
+                    // PDF download link
+                    const pdfBtn = document.getElementById('downloadPdfBtn');
+                    pdfBtn.href = 'generate_voucher_pdf.php?batch=' + encodeURIComponent(data.batch_id);
+
+                    sm.show();
+                } else if (data.status === 'fail') {
+                    const fm = new bootstrap.Modal(document.getElementById('redeemFailModal'));
+                    let text = data.message || 'Redemption failed.';
+                    if (data.reason === 'insufficient_points' && typeof data.shortage !== 'undefined') {
+                        text += ` You need ${data.shortage} more point(s).`;
+                    }
+                    if (data.reason === 'out_of_stock') {
+                        // Optional: you can also reflect the new stock on page after refresh
+                    }
+                    document.getElementById('redeemFailMsg').innerText = text;
+                    fm.show();
+                } else {
+                    alert(data.message || 'Server error.');
+                }
+            })
+            .catch(() => alert('Request failed.'));
         });
     });
 </script>
