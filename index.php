@@ -43,7 +43,7 @@ if ($result && $result->num_rows > 0) {
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/indexStyle.css?v=<?= time() ?>">
+  <link rel="stylesheet" href="css/indexStylebaru.css?v=<?= time() ?>">
 </head>
 <body>
 
@@ -89,109 +89,78 @@ if ($result && $result->num_rows > 0) {
 
 <!-- Full-width Hero / Carousel -->
 <div class="hero-carousel position-relative w-100">
-  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="heroCarousel" class="carousel slide">
     <div class="carousel-inner">
 
       <!-- Slide 1 -->
-<div class="carousel-item active">
-  <div class="container">
-    <div class="row align-items-center g-4 hero-slide">
-      <div class="col-md-6 text-center text-md-start">
-        <span class="badge-feature">Weekly Spotlight</span>
-        <h2 class="mt-3">Up to 50% Off on Popular Dishes</h2>
-        <p class="text-muted">Enjoy mouth-watering meals from top restaurants at unbeatable prices — this week only.</p>
-        <!-- <div class="mt-3">
-          <a href="#" class="btn btn-dark me-2">Explore Menu</a>
-          <a href="#" class="btn btn-outline-dark">See Details</a>
-        </div> -->
+      <div class="carousel-item active hero-slide" style="background-image: url('images/food/pizza.png');">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-md-6 text-center text-md-start text-light">
+              <span class="badge-feature">Weekly Spotlight</span>
+              <h2 class="mt-3">Up to 50% Off on Popular Dishes</h2>
+              <p>Enjoy mouth-watering meals from top restaurants at unbeatable prices — this week only.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center hero-img-container">
-        <img src="images/food/pizza.png" class="hero-img" alt="promo">
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Slide 2 -->
-<div class="carousel-item">
-  <div class="container">
-    <div class="row align-items-center g-4 hero-slide">
-      <div class="col-md-6 text-center text-md-start">
-        <span class="badge-feature">New</span>
-        <h2 class="mt-3">Exclusive Dining Rewards</h2>
-        <p class="text-muted">Earn cashback while enjoying your favorite meals at selected outlets.</p>
-        <!-- <div class="mt-3">
-          <a href="#" class="btn btn-dark me-2">Dine & Earn</a>
-          <a href="#" class="btn btn-outline-dark">Learn More</a>
-        </div> -->
+      <!-- Slide 2 -->
+      <div class="carousel-item hero-slide" style="background-image: url('images/food/satay.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-md-6 text-center text-md-start text-light">
+              <span class="badge-feature">New</span>
+              <h2 class="mt-3">Exclusive Dining Rewards</h2>
+              <p>Earn cashback while enjoying your favorite meals at selected outlets.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center hero-img-container">
-        <img src="images/food/satay.jpg" class="hero-img" alt="promo2">
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Slide 3 -->
-<div class="carousel-item">
-  <div class="container">
-    <div class="row align-items-center g-4 hero-slide">
-      <div class="col-md-6 text-center text-md-start">
-        <span class="badge-feature">Limited Time</span>
-        <h2 class="mt-3">Special Offers on Global Cuisine</h2>
-        <p class="text-muted">Taste the best from around the world — from Italian pasta to Japanese sushi.</p>
-        <!-- <div class="mt-3">
-          <a href="#" class="btn btn-dark me-2">Book a Table</a>
-          <a href="#" class="btn btn-outline-dark">View Deals</a>
-        </div> -->
+      <!-- Slide 3 -->
+      <div class="carousel-item hero-slide" style="background-image: url('images/food/mapo_tofu.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-md-6 text-center text-md-start text-light">
+              <span class="badge-feature">Limited Time</span>
+              <h2 class="mt-3">Special Offers on Global Cuisine</h2>
+              <p>Taste the best from around the world — from Italian pasta to Japanese sushi.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center hero-img-container">
-        <img src="images/food/mapo_tofu.jpg" class="hero-img" alt="promo3">
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Slide 4 -->
-<div class="carousel-item">
-  <div class="container">
-    <div class="row align-items-center g-4 hero-slide">
-      <div class="col-md-6 text-center text-md-start">
-        <span class="badge-feature">Hot Deal</span>
-        <h2 class="mt-3">Up to 60% Off on Desserts</h2>
-        <p class="text-muted">Indulge in creamy cakes, rich chocolates, and sweet treats at irresistible prices.</p>
-        <!-- <div class="mt-3">
-          <a href="#" class="btn btn-dark me-2">Order Now</a>
-          <a href="#" class="btn btn-outline-dark">More Sweets</a>
-        </div> -->
+      <!-- Slide 4 -->
+      <div class="carousel-item hero-slide" style="background-image: url('images/food/chocolate_cake.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-md-6 text-center text-md-start text-light">
+              <span class="badge-feature">Hot Deal</span>
+              <h2 class="mt-3">Up to 60% Off on Desserts</h2>
+              <p>Indulge in creamy cakes, rich chocolates, and sweet treats at irresistible prices.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center hero-img-container">
-        <img src="images/food/chocolate_cake.jpg" class="hero-img" alt="Dessert Deals">
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Slide 5 -->
-<div class="carousel-item">
-  <div class="container">
-    <div class="row align-items-center g-4 hero-slide">
-      <div class="col-md-6 text-center text-md-start">
-        <span class="badge-feature">Best Seller</span>
-        <h2 class="mt-3">Signature Dishes You Can’t Miss</h2>
-        <p class="text-muted">From juicy burgers to aromatic curries — savor our most-loved dishes today.</p>
-        <!-- <div class="mt-3">
-          <a href="#" class="btn btn-dark me-2">Order Now</a>
-          <a href="#" class="btn btn-outline-dark">See Menu</a>
-        </div> -->
+      <!-- Slide 5 -->
+      <div class="carousel-item hero-slide" style="background-image: url('images/food/nasi_lemak.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-md-6 text-center text-md-start text-light">
+              <span class="badge-feature">Best Seller</span>
+              <h2 class="mt-3">Signature Dishes You Can’t Miss</h2>
+              <p>From juicy burgers to aromatic curries — savor our most-loved dishes today.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-center hero-img-container">
-        <img src="images/food/nasi_lemak.jpg" class="hero-img" alt="Best Seller Dishes">
-      </div>
-    </div>
-  </div>
-</div>
-
 
     </div>
 
@@ -205,6 +174,7 @@ if ($result && $result->num_rows > 0) {
     </div>
   </div>
 </div>
+
 
 <!-- Categories -->
 <div class="row mt-4 g-3">
@@ -290,13 +260,15 @@ if ($result && $result->num_rows > 0) {
               <i class="fa fa-gift me-1"></i> Redeem
             </a>
             <button 
-              class="btn btn-add-to-cart btn-dark rounded-circle d-flex align-items-center justify-content-center" 
-              type="button" 
-              data-voucher-id="<?= $voucher['id']; ?>" 
-              title="Add to Cart" 
-              style="width:40px; height:40px;">
-              <i class="fa fa-shopping-cart fa-sm"></i>
-            </button>
+  class="btn btn-add-to-cart rounded-circle d-flex align-items-center justify-content-center" 
+  type="button" 
+  data-voucher-id="<?= $voucher['id']; ?>" 
+  title="Add to Cart" 
+  style="width:40px; height:40px;">
+  <i class="fa fa-shopping-cart fa-sm"></i>
+</button>
+
+
           </div>
         </div>
       </div>
@@ -433,5 +405,14 @@ document.getElementById('dealSearch').addEventListener('keyup', function() {
 });
 
   </script>
+  <script>
+  var myCarouselEl = document.querySelector('#heroCarousel');
+  var heroCarousel = new bootstrap.Carousel(myCarouselEl, {
+    interval: 3000, // 3 saat
+    ride: 'carousel'
+  });
+</script>
+
+
 </body>
 </html>
