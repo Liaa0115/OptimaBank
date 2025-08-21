@@ -115,6 +115,13 @@
     </div>
 
     <div class="right">
+      <?php
+        session_start();
+        if (isset($_SESSION['error'])) {
+            echo "<div style='color:red; font-weight:bold;'>" . $_SESSION['error'] . "</div>";
+            unset($_SESSION['error']);
+        }
+      ?>
       <form action="login_process.php" method="POST" class="login-form">
         <center><h2>LOGIN</h2></center>
 

@@ -244,7 +244,7 @@ if ($result && $result->num_rows > 0) {
     <?php foreach ($vouchers as $voucher): ?>
       <div class="col-md-4 col-sm-6">
         <div class="p-3 bg-white deal-card text-center">
-          <img src="<?= htmlspecialchars($voucher['image']) ?>" 
+          <img src="images/food/<?= htmlspecialchars($voucher['image']) ?>" 
                class="rounded mb-3 img-fluid mx-auto d-block" 
                style="max-width: 400px;" 
                alt="<?= htmlspecialchars($voucher['name']) ?>">

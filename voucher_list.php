@@ -2,11 +2,11 @@
 session_start();
 include 'conn.php';
 
-// Pastikan user dah login
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+// // Pastikan user dah login
+// if (!isset($_SESSION['email'])) {
+//     header("Location: login.php");
+//     exit();
+// }
 
 $email = $_SESSION['email'];
 
@@ -223,14 +223,14 @@ if ($subcatResult && $subcatResult->num_rows > 0) {
                  data-points="<?= $voucher['points_required'] ?>" 
                  data-name="<?= strtolower(htmlspecialchars($voucher['name'])) ?>">
               <div class="voucher-card">
-                <img src="<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
+                <img src="images/food/<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
                 <div class="p-3">
                   <h6 class="fw-bold"><?= htmlspecialchars($voucher['name']) ?></h6>
                   <p class="mb-1 text-muted"><?= htmlspecialchars($voucher['subcategory']) ?></p>
                   <p class="mb-1">RM <?= number_format($voucher['price'], 2) ?></p>
                   <p class="mb-2"><i class="fa-solid fa-coins text-warning"></i> <?= $voucher['points_required'] ?> Points</p>
                   <div class="d-flex justify-content-between">
-                    <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-warning btn-sm">Redeem Now</a>
+                    <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-warning btn-sm">Voucher Details</a>
                     <!-- <button class="btn btn-success btn-sm">Add to Cart</button> -->
                     <button class="btn btn-success btn-sm" type="button" data-voucher-id="<?php echo $voucher['id']; ?>">
                       Add to Cart

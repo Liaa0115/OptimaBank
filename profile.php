@@ -43,6 +43,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
     <ul>
         <li><a href="index.php">Home Page</a></li>
         <li><a href="voucher_list.php">Voucher</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
         <li class="points-badge">Point Balance: <?= $points ?></li>
         <li class="nav-item">
             <a class="nav-link cart-icon" href="cart.php">

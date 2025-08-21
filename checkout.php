@@ -100,9 +100,9 @@ if (isset($_POST['confirm_checkout'])) {
 
           // 6) Kosongkan cart
           $placeholders = implode(',', array_fill(0, count($selected), '?'));
-$types = str_repeat('i', count($selected));
-$deleteCart = $conn->prepare("DELETE FROM cart WHERE email = ? AND id IN ($placeholders)");
-$deleteCart->bind_param("s" . $types, $email, ...$selected);
+          $types = str_repeat('i', count($selected));
+          $deleteCart = $conn->prepare("DELETE FROM cart WHERE email = ? AND id IN ($placeholders)");
+          $deleteCart->bind_param("s" . $types, $email, ...$selected);
 
           if (!$deleteCart->execute()) throw new Exception($deleteCart->error);
 
@@ -172,7 +172,7 @@ $deleteCart->bind_param("s" . $types, $email, ...$selected);
           $subtotal = $row['points_required'] * $row['quantity'];
       ?>
         <div class="voucher-card">
-          <img src="<?= htmlspecialchars($row['image']); ?>" alt="">
+          <img src="images/food/<?= htmlspecialchars($row['image']); ?>" alt="">
           <div class="voucher-info">
             <h5><?= htmlspecialchars($row['name']); ?></h5>
             <p><?= htmlspecialchars($row['description']); ?></p>

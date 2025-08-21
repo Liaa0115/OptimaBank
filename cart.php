@@ -82,7 +82,7 @@ $conn->close();
                 <input type="checkbox" name="selected[]" value="<?= $item['cart_id'] ?>">
             </td>
             <td>
-                <img src="<?= htmlspecialchars($item['image']) ?>" 
+                <img src="images/food/<?= htmlspecialchars($item['image']) ?>" 
                      alt="<?= htmlspecialchars($item['name']) ?>" 
                      width="70" class="mx-auto d-block">
             </td>
@@ -110,6 +110,13 @@ $conn->close();
     <div id="alert-box" class="alert alert-danger d-none">
         ⚠️ Please select at least one item before proceeding to checkout.
     </div>
+    
+    <div class="form-check me-4">
+        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+        <label class="form-check-label" for="agreeTerms">
+            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a>
+        </label>
+    </div>
 
     <div class="checkout-box d-flex justify-content-end align-items-center mt-4">
         <button type="submit" class="btn btn-success btn-lg">
@@ -120,12 +127,38 @@ $conn->close();
     <?php endif; ?>
 </div>
 
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>1. Voucher is valid for 14 days from redemption date.</p>
+                <p>2. Voucher is non-refundable and cannot be exchanged for cash.</p>
+                <p>3. Only valid for the registered user’s account.</p>
+                <p>4. Other terms and conditions may apply.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: white; background-color: #0f6f4a !important; border-color: #0f6f4a !important;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Validate form before checkout
 document.getElementById("cart-form").addEventListener("submit", function(event) {
     let checkboxes = document.querySelectorAll('input[name="selected[]"]:checked');
     let alertBox = document.getElementById("alert-box");
+
+    let termsAlert = document.createElement('div');
+    termsAlert.id = 'terms-alert';
+    termsAlert.className = 'alert alert-warning d-none';
+    termsAlert.innerHTML = '⚠️ Please agree to the Terms & Conditions before proceeding.';
+    
 
     if (checkboxes.length === 0) {
         event.preventDefault(); 

@@ -187,7 +187,7 @@ $conn->close();
     <?php if ($voucher): ?>
     <div class="row redeem-card-content">
         <div class="col-md-6 product-image-section">
-            <img src="<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
+            <img src="images/food/<?= htmlspecialchars($voucher['image']) ?>" alt="<?= htmlspecialchars($voucher['name']) ?>">
         </div>
 
         <div class="col-md-6 product-details-section">

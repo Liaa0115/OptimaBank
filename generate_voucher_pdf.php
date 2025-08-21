@@ -81,8 +81,8 @@ $html = '
 
 foreach ($rows as $row) {
     $code   = htmlspecialchars($row['voucher_code']);
-    $imgSrc = $baseUrl . $row['image'];
-    $remaining = $currentBalance; // ✅ use user’s current balance from DB
+    $imgSrc = $baseUrl . "images/food/" . $row['image'];
+    $remaining = $currentBalance; 
 
     $html .= '
     <div class="voucher-box">
