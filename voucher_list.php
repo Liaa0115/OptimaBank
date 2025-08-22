@@ -8,23 +8,26 @@ include 'conn.php';
 //     exit();
 // }
 
-$email = $_SESSION['email'];
-
 // Subcategory filter dari URL (optional)
 $subcategoryFilter = $_GET['subcategory'] ?? null;
 
 // =========================
 // Ambil maklumat user
 // =========================
-$stmt = $conn->prepare("
-    SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image 
-    FROM users 
-    WHERE email = ?
-");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-$stmt->close();
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+
+    $stmt = $conn->prepare("SELECT username, fullname, phone, address, street, postcode, city, state, about, profile_image FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $user = $stmt->get_result()->fetch_assoc();
+
+    $pointStmt = $conn->prepare("SELECT points FROM Points WHERE email = ?");
+    $pointStmt->bind_param("s", $email);
+    $pointStmt->execute();
+    $pointResult = $pointStmt->get_result()->fetch_assoc();
+    $points = $pointResult ? $pointResult['points'] : 0;
+}
 
 // =========================
 // Ambil points user
