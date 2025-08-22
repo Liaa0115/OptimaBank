@@ -257,7 +257,7 @@ if ($result && $result->num_rows > 0) {
           <!-- Butang align tengah -->
           <div class="mt-3 d-flex justify-content-center align-items-center gap-2">
             <a href="voucher_info.php?id=<?= $voucher['id'] ?>" class="btn btn-sm btn-dark">
-              <i class="fa fa-gift me-1"></i> Redeem
+              <i class="fa fa-gift me-1"></i> View Details
             </a>
             <button 
   class="btn btn-add-to-cart rounded-circle d-flex align-items-center justify-content-center" 

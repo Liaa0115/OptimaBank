@@ -23,8 +23,6 @@ nav.top-navbar {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-
-
 .top-navbar .logo img {
     height: 26px;
     border-radius: 6px;
@@ -402,4 +400,58 @@ nav.top-navbar {
 .cart-icon:hover i {
     color: #0f6f4a; /* pastikan icon kekal hijau */
 }
-
+/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////// 22/8/2025 4:51PM */
+/* Base layout */
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Left panel */
+  .left-panel {
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  /* Right panel takes remaining space */
+  .right-panel {
+    flex: 2;
+  }
+  /* Hamburger button */
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* Mobile view */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+  
+    .top-navbar {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  
+    .top-navbar ul {
+      display: none; /* hidden by default */
+      flex-direction: column;
+      width: 100%;
+      background: var(--mb-black);
+      padding: 10px 0;
+    }
+  
+    .top-navbar ul.show {
+      display: flex; /* show when toggled */
+    }
+  
+    .top-navbar ul li {
+      margin: 10px 0;
+      text-align: center;
+    }
+  }
+  

@@ -25,6 +25,7 @@ $points = $pointResult ? $pointResult['points'] : 0;
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optima Bank | Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="css/navbarProfile.css?v=<?= time() ?>">
@@ -39,8 +40,10 @@ $points = $pointResult ? $pointResult['points'] : 0;
     </a>
     <span>TREATS POINTS</span>
 </div>
+<!-- Hamburger button (hidden on desktop) -->
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-    <ul>
+<ul id="menu">
         <li><a href="index.php">Home Page</a></li>
         <li><a href="voucher_list.php">Voucher</a></li>
         <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
@@ -161,6 +164,11 @@ $points = $pointResult ? $pointResult['points'] : 0;
     function closeModal(type) {
         document.getElementById('modal-' + type).style.display = 'none';
     }
+</script>
+<script>
+function toggleMenu() {
+  document.getElementById("menu").classList.toggle("show");
+}
 </script>
 
 </body>
