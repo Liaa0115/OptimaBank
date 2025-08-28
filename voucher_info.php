@@ -144,6 +144,42 @@ $conn->close();
         line-height: 1.5;
         color: #555;
     }
+    /* --- Start of Responsive CSS --- */
+    @media (max-width: 768px) {
+        .redeem-card-container {
+            width: 95%; /* Adjust width to be percentage-based */
+            margin: 20px auto; /* Adjust margin for mobile view */
+            padding: 1.5rem; /* Reduce padding */
+        }
+        .redeem-card-content {
+            flex-direction: column; /* Stack image and details vertically */
+            gap: 1.5rem; /* Reduce gap between sections */
+        }
+        .product-image-section {
+            margin-bottom: 1rem; /* Add some space below the image */
+        }
+        .product-details-section {
+            padding-left: 0; /* Remove left padding */
+            border-left: none; /* Remove vertical border */
+        }
+        .product-details-section h2 {
+            text-align: center; /* Center the heading on mobile */
+            font-size: 1.75rem; /* Adjust font size */
+        }
+        .product-details-section p,
+        .product-details-section .row {
+            text-align: center; /* Center text and rows */
+        }
+        .d-md-flex {
+            flex-direction: column; /* Stack buttons vertically */
+        }
+        .btn-redeem-now, .btn-add-to-cart {
+            width: 100%; /* Make buttons full-width */
+            margin-top: 10px; /* Add space between buttons */
+            padding: 0.75rem; /* Adjust padding */
+        }
+    }
+    /* --- End of Responsive CSS --- */
 </style>
 </head>
 <body>

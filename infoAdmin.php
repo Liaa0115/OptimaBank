@@ -60,7 +60,7 @@ function getRedeemedVoucherData($conn, $month = null, $year = null) {
         $weekEnd = date("Y-m-d", min(strtotime("+6 days", $current), strtotime($lastDay)));
 
         $data[] = [
-            'week_label' => "Week $week ($weekStart - $weekEnd)",
+            'week_label' => "Week $week",
             'total_redeemed' => $redeemedMap[$week] ?? 0
         ];
 
@@ -177,7 +177,9 @@ $conn->close();
 </section>
 
 <section id="content">
-  <nav></nav>
+  <nav>
+    <i class='bx bx-menu'></i>
+  </nav>
 
   <main class="container-fluid py-4">
     <div class="head-title d-flex justify-content-between align-items-center mb-4">
@@ -224,13 +226,45 @@ $conn->close();
              value="<?php echo $selectedMonth; ?>">
       <button type="submit" class="btn btn-sm btn-success">Filter</button>
     </form>
-      <canvas id="redemptionChart" height="90"></canvas>
+      <div class="chart-wrapper" style="position: relative;">
+        <canvas id="redemptionChart"></canvas>
+      </div>
     </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+
+    document.addEventListener('DOMContentLoaded', function() {  
+      const menuBar = document.querySelector('#content nav .bx.bx-menu');
+      const sidebar = document.getElementById('sidebar');
+
+      menuBar.addEventListener('click', function () {
+          if (window.innerWidth <= 992) {
+              // Mobile: toggle slide in/out
+              sidebar.classList.toggle('show');
+              document.body.classList.toggle('sidebar-open');
+          } else {
+              // Desktop: toggle collapse
+              sidebar.classList.toggle('hide');
+              if (sidebar.classList.contains('hide')) {
+                  localStorage.setItem('sidebar-state', 'hide');
+              } else {
+                  localStorage.setItem('sidebar-state', 'show');
+              }
+          }
+      });
+
+      // Handle desktop saved state
+      if (window.innerWidth > 992) {
+          if (localStorage.getItem('sidebar-state') === 'hide') {
+              sidebar.classList.add('hide');
+          }
+      }
+  });
+
+
     document.addEventListener('DOMContentLoaded', function() {
       var ctx = document.getElementById('redemptionChart').getContext('2d');
       var redemptionChart = new Chart(ctx, {

@@ -13,6 +13,7 @@ $total_vouchers = $total_vouchers_query->fetch_assoc()['total'];
 $total_pages = ceil($total_vouchers / $limit);
 
 // Fetch vouchers for the current page, ordered by ID descending
+// To show oldest first, change ORDER BY id DESC to ORDER BY id ASC
 $result = $conn->query("SELECT * FROM vouchers ORDER BY id DESC LIMIT $limit OFFSET $offset");
 
 // CREATE
@@ -125,6 +126,97 @@ if (isset($_GET['delete'])) {
         border-color: #006400 !important;
     }
 
+    /* ===================
+    MOBILE RESPONSIVENESS (Card View)
+    =================== */
+    @media (max-width: 992px) {
+        /* Sidebar becomes overlay */
+        #sidebar {
+            position: fixed;
+            left: -260px; /* hidden by default */
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background: var(--light);
+            z-index: 2000;
+            transition: left 0.3s ease;
+        }
+        #sidebar.show {
+            left: 0;
+        }
+
+        /* Keep navbar + hamburger visible */
+        #content nav {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            background: var(--light);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 3000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #content nav .bx.bx-menu {
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 3001;
+        }
+
+        /* Push main content below nav */
+        #content main {
+            margin-top: 70px;
+            padding: 15px;
+        }
+
+        /* Hide the original table on mobile */
+        .table-responsive .table {
+            display: none;
+        }
+
+        /* New Card Styles */
+        .voucher-card {
+            background-color: var(--light);
+            border: 1px solid var(--grey);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .voucher-card-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--grey);
+        }
+
+        .voucher-card-item:last-child {
+            border-bottom: none;
+        }
+
+        .voucher-card-item strong {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .voucher-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        /* Adjustments for the new layout */
+        .table-responsive {
+            display: none; /* Hide the table view completely on small screens */
+        }
+        
+    }
+
 </style>
 </head>
 <body>
@@ -132,7 +224,7 @@ if (isset($_GET['delete'])) {
 <section id="sidebar">
     <a href="#" class="brand">
         <img src="images/logo.png" alt="AdminHub Logo" class="logo-img" style="width: 100%; height:auto">
-    </a>    
+    </a>       
     <ul class="side-menu top">
         <li>
             <a href="infoAdmin.php"><i class='bx bxs-dashboard bx-sm'></i><span class="text">Dashboard</span></a>
@@ -142,22 +234,15 @@ if (isset($_GET['delete'])) {
         </li>
     </ul>
     <ul class="side-menu bottom">
-        <!-- <li><a href="#"><i class='bx bxs-cog bx-sm bx-spin-hover'></i><span class="text">Settings</span></a></li> -->
         <li><a href="logout.php" class="logout"><i class='bx bx-power-off bx-sm bx-burst-hover'></i><span class="text">Logout</span></a></li>
     </ul>
 </section>
 
 <section id="content">
     <nav>
-        <!-- <i class='bx bx-menu bx-sm'></i>
-        <a href="#" class="nav-link">Categories</a>
-        <form action="#">
-            <div class="form-input">
-                <input type="search" placeholder="Search...">
-                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-            </div>
-        </form> -->
+        <i class='bx bx-menu bx-sm' id="menu-toggle"></i>
     </nav>
+
 
     <main class="container-fluid py-4">
         <div class="head-title d-flex justify-content-between align-items-center mb-4">
@@ -167,7 +252,44 @@ if (isset($_GET['delete'])) {
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <div class="table-responsive">
+                <div class="mobile-voucher-list d-block d-md-none">
+                    <?php
+                    $result->data_seek(0); // Reset the pointer to the beginning of the result set
+                    $row_number = ($page - 1) * $limit + 1; // Initialize row number
+                    while ($row = $result->fetch_assoc()):
+                    ?>
+                        <div class="voucher-card">
+                            <div class="voucher-card-item">
+                                <strong>No:</strong> <span><?= $row_number++ ?></span>
+                            </div>
+                            <div class="voucher-card-item">
+                                <strong>Name:</strong> <span><?= htmlspecialchars($row['name']) ?></span>
+                            </div>
+                            <div class="voucher-card-item">
+                                <strong>Category:</strong> <span><?= htmlspecialchars($row['category']) ?></span>
+                            </div>
+                            <div class="voucher-card-item">
+                                <strong>Price:</strong> <span>RM <?= htmlspecialchars($row['price']) ?></span>
+                            </div>
+                            <div class="voucher-card-item">
+                                <strong>Points:</strong> <span><?= htmlspecialchars($row['points_required']) ?></span>
+                            </div>
+                            <div class="voucher-card-item">
+                                <strong>Qty:</strong> <span><?= htmlspecialchars($row['quantity']) ?></span>
+                            </div>
+                            <div class="voucher-actions">
+                                <button class="btn btn-warning btn-sm" onclick='openEditModal(<?= json_encode($row) ?>)' style="background-color: #006400; color:white">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <a href="?delete=<?= htmlspecialchars($row['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this voucher?')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+                
+                <div class="table-responsive d-none d-md-block">
                     <table class="table table-hover table-striped">
                         <thead class="table-light">
                             <tr>
@@ -185,6 +307,7 @@ if (isset($_GET['delete'])) {
                         </thead>
                         <tbody>
                             <?php
+                            $result->data_seek(0); // Reset the pointer again for the table
                             $row_number = ($page - 1) * $limit + 1;
                             while ($row = $result->fetch_assoc()):
                             ?>
@@ -214,27 +337,25 @@ if (isset($_GET['delete'])) {
                     </table>
                 </div>
 
-                <nav class="mt-4  d-flex justify-content-end">
-                    <ul class="pagination">
-                        <?php if ($page > 1): ?>
-                            <li class="page-item">
-                                <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page - 1 ?>">Previous</a>
-                            </li>
-                        <?php endif; ?>
+                <ul class="pagination flex-wrap">
+                    <?php if ($page > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page - 1 ?>">Previous</a>
+                        </li>
+                    <?php endif; ?>
 
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
 
-                        <?php if ($page < $total_pages): ?>
-                            <li class="page-item">
-                                <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page + 1 ?>">Next</a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </nav>
+                    <?php if ($page < $total_pages): ?>
+                        <li class="page-item">
+                            <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page + 1 ?>">Next</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
     </main>
@@ -250,12 +371,15 @@ if (isset($_GET['delete'])) {
             <div class="modal-body">
                 <form method="post" enctype="multipart/form-data">
                     <div class="mb-3">
+                        <label for="vouchername" class="form-label">Voucher Name</label>
                         <input type="text" name="name" class="form-control" placeholder="Voucher Name" required>
                     </div>
                     <div class="mb-3">
+                        <label for="voucherimage" class="form-label">Voucher Image</label>
                         <input type="file" name="image" class="form-control" required>
                     </div>
                     <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
                         <input type="text" name="category" class="form-control" placeholder="Category" required>
                     </div>
                     <div class="mb-3">
@@ -266,18 +390,22 @@ if (isset($_GET['delete'])) {
                             <option value="Malay Food">Malay Food</option>
                             <option value="Chinese Food">Chinese Food</option>
                             <option value="Indian Food">Indian Food</option>
-                            </select>
+                        </select>
                     </div>
                     <div class="mb-3">
+                        <label for="price" class="form-label">Price</label>
                         <input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required>
                     </div>
                     <div class="mb-3">
+                        <label for="points_required" class="form-label">Points Required</label>
                         <input type="number" name="points_required" class="form-control" placeholder="Points Required" required>
                     </div>
                     <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
                         <textarea name="description" class="form-control" placeholder="Description" required></textarea>
                     </div>
                     <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" name="quantity" class="form-control" placeholder="Quantity" required>
                     </div>
                     <button type="submit" name="addVoucher" class="btn btn-primary w-100" style="background-color: #006400; color:white">Save</button>
@@ -367,6 +495,15 @@ if (isset($_GET['delete'])) {
             });
         });
     });
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('show');
+    });
 </script>
+
+
 </body>
 </html>
