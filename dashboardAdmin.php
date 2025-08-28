@@ -118,6 +118,13 @@ if (isset($_GET['delete'])) {
     --grey: #1a1a1a; /* Dark gray for elements */
     --dark: #FBFBFB; /* White for text */
     }
+
+    .page-item.active .page-link {
+        background-color: #006400 !important;
+        color: white !important;
+        border-color: #006400 !important;
+    }
+
 </style>
 </head>
 <body>
@@ -207,11 +214,11 @@ if (isset($_GET['delete'])) {
                     </table>
                 </div>
 
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-center">
+                <nav class="mt-4  d-flex justify-content-end">
+                    <ul class="pagination">
                         <?php if ($page > 1): ?>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+                                <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page - 1 ?>">Previous</a>
                             </li>
                         <?php endif; ?>
 
@@ -223,12 +230,11 @@ if (isset($_GET['delete'])) {
 
                         <?php if ($page < $total_pages): ?>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+                                <a class="page-link" style="background-color: #006400; color:white" href="?page=<?= $page + 1 ?>">Next</a>
                             </li>
                         <?php endif; ?>
                     </ul>
                 </nav>
-
             </div>
         </div>
     </main>
