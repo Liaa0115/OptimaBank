@@ -101,7 +101,7 @@
   </div>
   <ul>
     <li><a href="../index.php">Home</a></li>
-    <li><a href="voucher.html">Voucher</a></li>
+    <li><a href="../voucher_list.php">Voucher</a></li>
     <li><a href="register.php">Sign Up</a></li>
   </ul>
 </nav>
@@ -115,15 +115,17 @@
     </div>
 
     <div class="right">
-      <?php
-        session_start();
-        if (isset($_SESSION['error'])) {
-            echo "<div style='color:red; font-weight:bold;'>" . $_SESSION['error'] . "</div>";
-            unset($_SESSION['error']);
-        }
-      ?>
+      
       <form action="login_process.php" method="POST" class="login-form">
         <center><h2>LOGIN</h2></center>
+
+        <?php
+          session_start();
+          if (isset($_SESSION['error'])) {
+              echo "<div style='color:red; font-weight:bold;'>" . $_SESSION['error'] . "</div>";
+              unset($_SESSION['error']);
+          }
+        ?>
 
         <label>Email</label>
         <div class="input-group">

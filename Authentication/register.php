@@ -38,6 +38,14 @@
       <form action="register_process.php" method="POST" class="login-form">
         <center><h2>REGISTER</h2></center>
 
+        <?php
+          session_start();
+          if (isset($_SESSION['error'])) {
+              echo "<div style='color:red; font-weight:bold;'>" . $_SESSION['error'] . "</div>";
+              unset($_SESSION['error']);
+          }
+        ?>
+        
         <div class="input-group">
           <input type="text" name="username" placeholder="Enter username here" required />
           <span class="icon" style="font-size: medium;"><i class="fa-solid fa-user"></i></span>

@@ -1,5 +1,6 @@
 <?php
 include '../conn.php'; // connection to your DB
+session_start();
 
 // Sanitize user input
 $username = trim($_POST['username']);
@@ -10,7 +11,9 @@ $confirm_password = $_POST['confirm_password'];
 
 // Password match check
 if ($password !== $confirm_password) {
-    die("Passwords do not match.");
+    $_SESSION['error'] = "Passwords do not match.";
+    header("Location: register.php");
+    exit();
 }
 
 // Hash password
@@ -23,7 +26,9 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    die("Email already registered.");
+    $_SESSION['error'] = "Email already registered.";
+    header("Location: register.php");
+    exit();
 }
 
 // Insert into users table
@@ -47,10 +52,13 @@ if ($stmt->execute()) {
     header("Location: login.php?success=1");
     exit();
 } else {
-    echo "Error: " . $stmt->error;
+    $_SESSION['error'] = "Error: " . $stmt->error;
+    header("Location: register.php");
+    exit();
 }
 
 // Cleanup
 $stmt->close();
 $conn->close();
 ?>
+    
