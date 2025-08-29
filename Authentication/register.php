@@ -10,18 +10,35 @@
 </head>
 <body> 
 
- <nav class="top-navbar">
-  <div class="logo">
-    <a href="index.html">
-      <img src="../images/logo.png" alt="OptimaBank Logo" style="height: 30px;">
-    </a>
-  </div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="voucher.html">Voucher</a></li>
-    <li><a href="login.php">Sign In</a></li>
-  </ul>
-</nav>
+    <nav class="top-navbar">
+        <div class="logo">
+            <a href="../index.php">
+                <img src="../images/logo.png" alt="OptimaBank Logo" style="height: 30px;">
+            </a>
+        </div>
+        
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="../voucher_list.php">Voucher</a></li>
+            <li><a href="login.php">Sign In</a></li>
+        </ul>
+    </nav>
+    
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    </script>
 
 
   <div class="container">
@@ -45,7 +62,7 @@
               unset($_SESSION['error']);
           }
         ?>
-        
+
         <div class="input-group">
           <input type="text" name="username" placeholder="Enter username here" required />
           <span class="icon" style="font-size: medium;"><i class="fa-solid fa-user"></i></span>

@@ -1,9 +1,9 @@
- * {
+* {
     box-sizing: border-box;
     font-family: 'Segoe UI', sans-serif;
-    }
+}
 
-    body {
+body {
     margin: 0;
     background: url('../images/background.png') no-repeat center center;
     background-size: cover;
@@ -11,78 +11,77 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    }
+}
 
-    .container {
+.container {
     display: flex;
     width: 1000px;
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
 
-    .left {
+.left {
     flex: 1;
     padding: 50px;
-    background: rgb(0, 117, 72); 
-    /* background: rgb(0, 167, 103);  */
+    background: rgb(0, 117, 72);
     color: white;
-    }
+}
 
-    .left .logo {
+.left .logo {
     height: 50px;
     margin-bottom: 30px;
-    }
+}
 
-    .left h1 {
+.left h1 {
     font-size: 40px;
     margin: 0 0 10px;
-    }
+}
 
-    .left p {
+.left p {
     font-size: 16px;
-    }
+}
 
-    .right {
+.right {
     flex: 1;
     padding: 50px;
     background-color: white;
-    }
+}
 
-    .login-form h2 {
+.login-form h2 {
     color: #2ca47e;
     margin-bottom: 30px;
-    }
+}
 
-    .input-group {
+.input-group {
     position: relative;
     margin-bottom: 20px;
-    }
+}
 
-    .input-group input {
+.input-group input {
     width: 100%;
     padding: 12px 40px 12px 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    }
+}
 
-    .input-group .icon {
+.input-group .icon {
     position: absolute;
     right: 15px;
     top: 12px;
     font-size: 18px;
-    }
+}
 
-    .form-options {
+.form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     font-size: 14px;
-    }
+}
 
-    .btn {
+.btn {
     width: 100%;
     padding: 12px;
     background-color: #2ca47e;
@@ -91,16 +90,16 @@
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    }
+}
 
-    .divider {
+.divider {
     text-align: center;
     margin: 20px 0;
     font-size: 14px;
     color: #aaa;
-    }
+}
 
-    .google-btn {
+.google-btn {
     width: 100%;
     padding: 12px;
     background-color: #fff;
@@ -111,29 +110,82 @@
     border-radius: 8px;
     gap: 10px;
     cursor: pointer;
-    }
+}
 
-    .google-btn img {
+.google-btn img {
     height: 20px;
-    }
+}
 
-    .register {
+.register {
     margin-top: 20px;
     text-align: center;
     font-size: 14px;
-    }
+}
 
-    .register a {
+.register a {
     color: #2ca47e;
     text-decoration: none;
-    }
+}
 
-      .fpassword a {
+.fpassword a {
     color: #2ca47e;
     text-decoration: none;
-    }
+}
 
-    .icon {
+.icon {
     opacity: 0.6;
     margin-top: -1%;
+}
+
+/* --- Mobile Responsive CSS --- */
+@media (max-width: 768px) {
+    body {
+        background: none; /* Hide the background image for a cleaner mobile look */
     }
+
+    .container {
+        flex-direction: column; /* Stack the left and right sections vertically */
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        overflow-y: auto; /* Allow scrolling on smaller screens */
+        background-color: transparent; /* Make the container transparent to see the body background */
+    }
+
+    .left {
+        flex: none;
+        padding: 40px 20px 20px;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        position: relative;
+        z-index: 1; /* Ensure the top section is on top of the background */
+    }
+
+    .left .logo {
+        width: 100px; /* Adjust logo size */
+        margin-top: 0;
+    }
+
+    .left h1 {
+        font-size: 32px; /* Adjust font size for better mobile readability */
+    }
+
+    .left p {
+        font-size: 14px;
+    }
+
+    .right {
+        flex: none;
+        padding: 30px 20px;
+        background-color: white;
+        border-radius: 20px 20px 0 0;
+        margin-top: -20px; /* Overlap the green section slightly for a seamless look */
+        position: relative;
+        z-index: 2; /* Ensure the login form is on top */
+    }
+
+    .top-navbar {
+        display: none; /* Hide the desktop navbar on mobile */
+    }
+}
